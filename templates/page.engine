@@ -1,0 +1,13 @@
+{% extends 'base' %}
+
+{% block body %}
+<div>
+body sovrascritto in page
+</div>
+{% endblock body %}
+
+{% block page %}
+<div>
+page sovrascritto in page {{title}}
+</div>
+{% endblock page %}

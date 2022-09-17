@@ -1,0 +1,13 @@
+{% extends 'root' %}
+
+{% block body %}
+<div>
+body sovrascritto in base
+</div>
+{% endblock body %}
+
+{% block base %}
+<div>
+base sovrascritto in base
+</div>
+{% endblock base %}

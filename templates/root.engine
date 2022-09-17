@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title>{% block title %}title{% endblock title %}</title>
+        {% block css %}{% endblock css %}
+    </head>
+    <body>
+        {% block body %}<div class="content">content del root</div>{% endblock body %}
+        {% block root %}<div class="content">[prova]content del root</div>{% endblock root %}
+        {% block base %}<div class="content">content del root</div>{% endblock base %}
+        {% block page %}<div class="content">content del root</div>{% endblock page %}
+        {% block js %}{% endblock js %}
+    </body>
+</html>
