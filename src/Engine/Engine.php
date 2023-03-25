@@ -2,17 +2,22 @@
 
 namespace Sensorario\Engine;
 
+use Sensorario\Engine\Connection\Connection;
+
 class Engine
 {
     private $templateFolder;
 
     private $model = [];
 
+    private Connection $conn;
+
     public function __construct(
         private RenderLoops $renderLoops = new RenderLoops,
         private VarRender $varRender = new VarRender,
         private VarCounter $varCounter = new VarCounter,
         private PageBuilder $pageBuilder = new PageBuilder(new Finder),
+        private Connection $conn,
     ) { }
 
     public function addVariable(string $name, null|string|array $value = null)
@@ -58,14 +63,16 @@ class Engine
        $content = preg_replace_callback($pattern, function($matches) {
            $component = $matches[1];
            $config = json_decode($matches[2], true);
+           $grid = new Ui\Grid\Grid(
+                $this->varRender,
+                $this->pageBuilder,
+                $this->renderLoops,
+                $this->varCounter,
+                $config,
+            );
+           $grid->setConnection($this->conn);
            $ui = match($component) {
-                'Grid' => new Ui\Grid\Grid(
-                    $this->varRender,
-                    $this->pageBuilder,
-                    $this->renderLoops,
-                    $this->varCounter,
-                    $config,
-                ),
+                'Grid' => $grid,
            };
            return $ui->render();
         }, $content);

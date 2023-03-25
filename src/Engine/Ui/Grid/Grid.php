@@ -11,6 +11,8 @@ use Sensorario\Engine\VarRender;
 
 class Grid
 {
+    private Connection $conn;
+
     public function __construct(
         private VarRender $varRender = new VarRender,
         private PageBuilder $builder = new PageBuilder(new Finder),
@@ -19,11 +21,15 @@ class Grid
         private array $config = [],
     ) { }
 
+    public function setConnection()
+    {
+        $this->conn = new Connection;
+    }
+
     public function render(): string
     {
-        $conn = new Connection;
-        $conn->connect();
-        $pdo = $conn->getPdo();
+        $this->conn->connect();
+        $pdo = $this->conn->getPdo();
 
         // @todo introduce Request Object
         $query = [];
