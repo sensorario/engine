@@ -8,3 +8,63 @@ Provando a fare una sorta di clone di twig, mi sono ritrovato a creare un piccol
 
  - [Engine](/src/Engine/) - li template engine
  - [Grid](/src/Engine/Ui/Grid) - una griglia paginata
+
+## Come provarlo
+
+### 1. Si crea una class con interfaccia `Sensorario\Engine\Connection\Connection`
+
+```
+use Pdo;
+use Sensorario\Engine\Connection\Connection;
+
+class Connection implements Connection
+{
+    private Pdo $pdo;
+
+    public function connect(): void
+    {
+        $username = '<username>';
+        $password = '<password>';
+        $dns = '<dns>';
+        $this->pdo = new Pdo($dns, $username, $password);
+    }
+
+    public function getPdo(): Pdo
+    {
+        return $this->pdo;
+    }
+}
+```
+
+### 2. Si istanzia il template engine
+
+```
+$engine = new Engine\Engine(
+    new Connection,
+    new Engine\RenderLoops,
+    new Engine\VarRender(
+        catchMissingVariable: false,
+    ),
+    new Engine\VarCounter,
+    new Engine\PageBuilder(
+        new Engine\Finder,
+    ),
+),
+```
+
+### 3. Si configura un po
+
+```
+$engine->setTemplateFolder('templates/');
+$engine->addVariable('website', 'simonegentili.com');
+```
+
+### 4. Si usa
+
+```
+$this->render('nome-tempalte', [ 'variabile' => 'valore', ]);
+```
+
+## Documentazione
+
+Adesso non ho tanto tempo, .. ma magari nei prossimi giorni ci lavoro. Chissa.
