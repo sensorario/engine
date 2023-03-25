@@ -21,9 +21,9 @@ class Grid
         private array $config = [],
     ) { }
 
-    public function setConnection()
+    public function setConnection(Connection $conn)
     {
-        $this->conn = new Connection;
+        $this->conn = $conn;
     }
 
     public function render(): string
