@@ -1,0 +1,16 @@
+<div class="container">
+    <h1>{{title}}</h1>
+    <p>{{description}}</p>
+    {% include pagination %}
+    <div class="table">
+        <div class="row">
+            {% foreach headers as header %}
+            <div class="cell">{{header.name}}</div>
+            {% endforeach %}
+        </div>
+        {% foreach items as item %}
+        {% explode fields %}
+        {% endforeach %}
+    </div>
+    {% include pagination %}
+</div>
