@@ -10,8 +10,6 @@ class Engine
 
     private $model = [];
 
-    private Connection $conn;
-
     public function __construct(
         private RenderLoops $renderLoops = new RenderLoops,
         private VarRender $varRender = new VarRender,
