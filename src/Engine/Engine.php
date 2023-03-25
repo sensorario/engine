@@ -11,11 +11,11 @@ class Engine
     private $model = [];
 
     public function __construct(
+        private Connection $conn,
         private RenderLoops $renderLoops = new RenderLoops,
         private VarRender $varRender = new VarRender,
         private VarCounter $varCounter = new VarCounter,
         private PageBuilder $pageBuilder = new PageBuilder(new Finder),
-        private Connection $conn,
     ) { }
 
     public function addVariable(string $name, null|string|array $value = null)
