@@ -2,7 +2,7 @@
 
 namespace Sensorario\Engine\Ui\Grid;
 
-use Sensorario\Connection\Connection;
+use Sensorario\Engine\Connection\Connection;
 use Sensorario\Engine\Finder;
 use Sensorario\Engine\PageBuilder;
 use Sensorario\Engine\RenderLoops;
