@@ -20,3 +20,31 @@ $engine = new Engine\Engine(
     new Engine\PageBuilder,
 );
 ```
+
+### Cicli
+
+Ed ora supponiamo di avere un certo file chiamato `templates/loop.daduda.html`. E suppoanimo che abbia questo contenuto:
+
+```
+{% foreach items as item %}
+<li>{{item.id}}</li>
+{% endforeach %}
+```
+
+La dove si vada ad usare l'engine in questo modo
+
+```
+$engine->render('loop', [
+    'items' => [
+        ['id' => 42],
+        ['id' => 43],
+    ]
+]);
+```
+
+Si otterra il seguente codice:
+
+```
+<li>42</li>
+<li>43</li>
+```

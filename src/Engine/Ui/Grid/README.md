@@ -43,6 +43,22 @@ Nel json devono essere definite due variabli: model e source. Source indica il n
 </div>
 ```
 
+### Identificatore di riga
+
+Ogni riga puo' avere una cella con una checkbox. Quando questa viene selezionata, viene applicata una classe al `<div class="row"></div>` che contiene tutte le celle. Questo div deve avere un campo che lo identifichi univocamente. Per far si che qualsiasi insieme di dati possa avere un identificatore di riga configurabile, deve essere indicato con la chiave rowIdentifier:
+
+```
+{{Grid:{
+    "model":{
+        "rowIdentifier":"id",
+        "title": " ... ",
+        "description": " ... ",
+        "headers": { ... },
+    },
+    "source": { ... }
+}}}
+```
+
 ### Le colonne
 
 Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra semplicemente il contenuto della cella. Se si vuole la cella puo anche rendere linkabile il testo. Se la pagina che stiamo visualizzando e' `/resource` allora il link sarà `/resource/<id>`. Nel secondo caso, invece, verrà messa una checkbox. Con un javascript di esempio sarà possibile anche rendere selezionabili singolarmente o totalmente le celle visibili. Il campo name indica quello che verrà visualizzato come titolo della colonna.
@@ -50,6 +66,7 @@ Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra s
 ```
 {{Grid:{
     "model":{
+        "rowIdentifier":"id",
         "title": "Titolo",
         "description": "Descrizione",
         "headers": {
