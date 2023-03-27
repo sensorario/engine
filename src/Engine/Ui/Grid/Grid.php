@@ -61,8 +61,8 @@ class Grid
                     limit %s offset %s
                 ',
                 $source['table'],
-                isset($source['orderBy']) ? 'order by ' . $source['orderBy'] . ' desc ' : ' ',
                 isset($source['where']) ? 'where ' . $source['where']  : ' ',
+                isset($source['orderBy']) ? 'order by ' . $source['orderBy'] . ' desc ' : ' ',
                 $source['itemPerPage'],
                 $source['currentPage'] * $source['itemPerPage'],
             );
