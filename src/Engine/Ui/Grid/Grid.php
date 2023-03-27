@@ -56,12 +56,13 @@ class Grid
                 '
                     select *
                     from %s
-
+                    %s
                     %s
                     limit %s offset %s
                 ',
                 $source['table'],
                 isset($source['orderBy']) ? 'order by ' . $source['orderBy'] . ' desc ' : ' ',
+                isset($source['where']) ? 'where ' . $source['where']  : ' ',
                 $source['itemPerPage'],
                 $source['currentPage'] * $source['itemPerPage'],
             );
