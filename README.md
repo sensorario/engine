@@ -38,6 +38,8 @@ class Connection implements Connection
 
 ### 2. Si istanzia il template engine
 
+Si lo so non e' il massimo ma per ora e' il massimo che sono riuscito a fare.
+
 ```
 $engine = new Engine\Engine(
     new Engine\Connection\Connection,
