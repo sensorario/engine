@@ -71,11 +71,16 @@ class Grid
             $stmt->execute();
             return $stmt->fetchAll();
         })($this->config['source'], $pdo);
-
+        
         $this->config['model']['numOfRecords'] = (function($source, $pdo) {
             $stmt = $pdo->prepare(sprintf(
-                'select count(*) as num from %s',
+                '
+                select count(*) as num
+                from %s
+                %s
+                ',
                 $source['table'],
+                isset($source['where']) ? 'where ' . $source['where']  : ' ',
             ));
             $stmt->execute();
             return $stmt->fetch()['num'];
