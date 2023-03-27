@@ -67,9 +67,6 @@ class Grid
                 $source['currentPage'] * $source['itemPerPage'],
             );
             
-            var_export($sql);
-            die;
-
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll();
