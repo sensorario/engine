@@ -17,16 +17,16 @@ class RenderLoops
                 $array_name = $matches[1];
                 $item_name = $matches[2];
                 $inner_template = $matches[3];
-
+                $rowIdentifier = $data['rowIdentifier'];
                 $output = '';
                 $partial = $inner_template;
-                foreach ($data[$array_name] as $field => $values) {
-                    foreach ($values as $key => $value) {
-                        $search = "{$item_name}.{$key}";
-                        $replace = $value;
-                        $partial = $this->varRender->apply($partial, [ $item_name => $values ]);
-                        $partial = $this->varCounter->apply($partial, [ $item_name => $values ]);
+                foreach ($data[$array_name] as $values) {
+                    if ($array_name === 'items') {
+                        $values['rowIdentifier'] = $values[$rowIdentifier];
                     }
+
+                    $partial = $this->varRender->apply($partial, [ $item_name => $values ]);
+                    $partial = $this->varCounter->apply($partial, [ $item_name => $values ]);
                     $output .= $partial;
                     $partial = $inner_template;
                 }

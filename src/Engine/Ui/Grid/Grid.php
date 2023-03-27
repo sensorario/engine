@@ -28,6 +28,12 @@ class Grid
 
     public function render(): string
     {
+        if (!isset($this->config['model']['rowIdentifier'])) {
+            throw new Exceptions\MissingRowIdentifierException(
+                sprintf('Oops! Missing row identifier')
+            );
+        }
+
         $this->conn->connect();
         $pdo = $this->conn->getPdo();
 
