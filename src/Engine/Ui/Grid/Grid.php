@@ -56,6 +56,7 @@ class Grid
                 '
                     select *
                     from %s
+
                     %s
                     limit %s offset %s
                 ',
@@ -64,6 +65,10 @@ class Grid
                 $source['itemPerPage'],
                 $source['currentPage'] * $source['itemPerPage'],
             );
+            
+            var_export($sql);
+            die;
+
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll();
