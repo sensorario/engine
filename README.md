@@ -40,7 +40,7 @@ class Connection implements Connection
 
 ```
 $engine = new Engine\Engine(
-    new Connection,
+    new Engine\Connection\Connection,
     new Engine\RenderLoops,
     new Engine\VarRender(
         catchMissingVariable: false,
@@ -49,7 +49,7 @@ $engine = new Engine\Engine(
     new Engine\PageBuilder(
         new Engine\Finder,
     ),
-),
+);
 ```
 
 ### 3. Si configura un po
