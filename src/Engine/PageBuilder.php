@@ -74,15 +74,14 @@ class PageBuilder
             $content = str_replace('{% include '.$tpl.' %}', $fileContent, $content);
         }
 
-        // explode
-        // @todo fields deve essere dinamico
-        // @todo caricare celle dinamicamente?
-        // @todo un explode puo essere richiamato se prima e' stato passato una bomba
-        //       $this->pageBuilder->addVars('bomb', ## il valore ## );
-        //       {% explode bomb %}
         $re = '/(?s){% explode fields %}/m';
         preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
         if ($matches != []) {
+
+            if (!isset($this->preloaded['model']['headers'])) {
+                throw new Exceptions\MissingHeadersException;
+            } 
+
             $return = '';
             foreach ($this->preloaded['model']['headers'] as $field) {
                 // @todo rename table into resource?
@@ -92,7 +91,7 @@ class PageBuilder
             }
             // @todo e se il campo id non e' presente?
             $exploded = <<<ENGINE
-            <div class="row" id="id-{{item.id}}">
+            <div class="row" id="id-{{item.rowIdentifier}}">
             $return
             </div>
             ENGINE;
