@@ -14,10 +14,12 @@ use Sensorario\Engine;
 $engine = new Engine\Engine(
     new Engine\RenderLoops,
     new Engine\VarRender(
-        catchMissingVariable: true,
+        catchMissingVariable: false,
     ),
     new Engine\VarCounter,
-    new Engine\PageBuilder,
+    new Engine\PageBuilder(
+        new Engine\Finder,
+    ),
 );
 ```
 

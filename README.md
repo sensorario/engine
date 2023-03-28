@@ -11,32 +11,22 @@ Provando a fare una sorta di clone di twig, mi sono ritrovato a creare un piccol
 
 ## Come provarlo
 
-### 1. Si crea una class con interfaccia `Sensorario\Engine\Ui\Grid\Repository`
+### 1. Ogni griglia vuole il proprio reposotory
 
 ```
-use Sensorario\Engine\Ui\Grid\Repository;
+<?php
 
-class MyRepository implements Repository
+namespace Sensorario\Engine\Ui\Grid;
+
+interface Repository
 {
-    public function findPaginated(): array
-    {
-        // ...
-    }
+    public function findPaginated(int $itemPerPage = 10): array;
 
-    public function count(): int
-    {
-        // ...
-    }
+    public function count(): int;
 
-    public function setWhereCondition(): void
-    {
-        // ...
-    }
+    public function setWhereCondition(): void;
 
-    public function setWhereNotInCondition(): void
-    {
-        // ...
-    }
+    public function setWhereNotInCondition(): void;
 }
 ```
 
@@ -46,7 +36,6 @@ Si lo so non e' il massimo ma per ora e' il massimo che sono riuscito a fare.
 
 ```
 $engine = new Engine\Engine(
-    new MyRepository,
     new Engine\RenderLoops,
     new Engine\VarRender(
         catchMissingVariable: false,
