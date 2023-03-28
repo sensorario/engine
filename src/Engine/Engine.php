@@ -2,7 +2,7 @@
 
 namespace Sensorario\Engine;
 
-use Sensorario\Engine\Connection\Connection;
+use Sensorario\Engine\Ui\Grid\Repository;
 
 class Engine
 {
@@ -11,7 +11,7 @@ class Engine
     private $model = [];
 
     public function __construct(
-        private Connection $conn,
+        private Repository $conn,
         private RenderLoops $renderLoops = new RenderLoops,
         private VarRender $varRender = new VarRender,
         private VarCounter $varCounter = new VarCounter,
@@ -62,13 +62,13 @@ class Engine
            $component = $matches[1];
            $config = json_decode($matches[2], true);
            $grid = new Ui\Grid\Grid(
+                $this->repo,
                 $this->varRender,
                 $this->pageBuilder,
                 $this->renderLoops,
                 $this->varCounter,
                 $config,
             );
-           $grid->setConnection($this->conn);
            $ui = match($component) {
                 'Grid' => $grid,
            };
