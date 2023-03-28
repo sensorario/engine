@@ -11,20 +11,14 @@ use Sensorario\Engine\VarRender;
 
 class Grid
 {
-    private Connection $conn;
-
     public function __construct(
+        private Repository $repo,
         private VarRender $varRender = new VarRender,
         private PageBuilder $builder = new PageBuilder(new Finder),
         private RenderLoops $renderLoops = new RenderLoops(),
         private VarCounter $varCounter = new VarCounter(),
         private array $config = [],
     ) { }
-
-    public function setConnection(Connection $conn)
-    {
-        $this->conn = $conn;
-    }
 
     public function render(): string
     {
@@ -33,9 +27,6 @@ class Grid
                 sprintf('Oops! Missing row identifier')
             );
         }
-
-        $this->conn->connect();
-        $pdo = $this->conn->getPdo();
 
         // @todo introduce Request Object
         $query = [];
@@ -48,44 +39,8 @@ class Grid
         $this->config['model']['nextPage'] = $query['p'] + 1;
         $this->config['model']['previousPage'] = $query['p'] - 1;
         $this->config['model']['currentPage'] = $query['p'];
-
-        // @todo move in a new component
-        $this->config['model']['items'] = (function($source, $pdo) {
-            if ($source['currentPage'] < 0) $source['currentPage'] = 0;
-            $sql = sprintf(
-                '
-                    select *
-                    from %s
-                    %s
-                    %s
-                    limit %s offset %s
-                ',
-                $source['table'],
-                isset($source['where']) ? 'where ' . $source['where']  : ' ',
-                isset($source['orderBy']) ? 'order by ' . $source['orderBy'] . ' desc ' : ' ',
-                $source['itemPerPage'],
-                $source['currentPage'] * $source['itemPerPage'],
-            );
-            
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        })($this->config['source'], $pdo);
-        
-        $this->config['model']['numOfRecords'] = (function($source, $pdo) {
-            $stmt = $pdo->prepare(sprintf(
-                '
-                select count(*) as num
-                from %s
-                %s
-                ',
-                $source['table'],
-                isset($source['where']) ? 'where ' . $source['where']  : ' ',
-            ));
-            $stmt->execute();
-            return $stmt->fetch()['num'];
-        })($this->config['source'], $pdo);
-
+        $this->config['model']['items'] = $this->repo->findPaginated();
+        $this->config['model']['numOfRecords'] = $this->repo->count();
         $this->config['model']['numOfPages'] = (int) (
             $this->config['model']['numOfRecords'] /
             $this->config['source']['itemPerPage']

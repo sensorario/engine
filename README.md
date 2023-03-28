@@ -11,27 +11,31 @@ Provando a fare una sorta di clone di twig, mi sono ritrovato a creare un piccol
 
 ## Come provarlo
 
-### 1. Si crea una class con interfaccia `Sensorario\Engine\Connection\Connection`
+### 1. Si crea una class con interfaccia `Sensorario\Engine\Ui\Grid\Repository`
 
 ```
-use Pdo;
-use Sensorario\Engine\Connection\Connection;
+use Sensorario\Engine\Ui\Grid\Repository;
 
-class Connection implements Connection
+class MyRepository implements Repository
 {
-    private Pdo $pdo;
-
-    public function connect(): void
+    public function findPaginated(): array
     {
-        $username = '<username>';
-        $password = '<password>';
-        $dns = '<dns>';
-        $this->pdo = new Pdo($dns, $username, $password);
+        // ...
     }
 
-    public function getPdo(): Pdo
+    public function count(): int
     {
-        return $this->pdo;
+        // ...
+    }
+
+    public function setWhereCondition(): void
+    {
+        // ...
+    }
+
+    public function setWhereNotInCondition(): void
+    {
+        // ...
     }
 }
 ```
@@ -42,7 +46,7 @@ Si lo so non e' il massimo ma per ora e' il massimo che sono riuscito a fare.
 
 ```
 $engine = new Engine\Engine(
-    new Engine\Connection\Connection,
+    new MyRepository,
     new Engine\RenderLoops,
     new Engine\VarRender(
         catchMissingVariable: false,
