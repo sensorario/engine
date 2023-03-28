@@ -40,6 +40,9 @@ class GridTest extends TestCase
     public function should()
     {
         $this->repo->expects($this->once())
+            ->method('findPaginated');
+
+        $this->repo->expects($this->once())
             ->method('count')
             ->willReturn(123);
 
@@ -65,9 +68,3 @@ class GridTest extends TestCase
         $grid->render();
     }
 }
-
-/**
- * valutare se effettivamente non si possa evitare di assegnarlo ad ogni record, ...
- *      forse basta passarlo una volta sola, .. no? e non stare a modificare
- *      tutte le righe per aggiungere un valore che tanto non cambia mai, ...
- */
