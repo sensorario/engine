@@ -17,7 +17,7 @@ class RenderLoops
                 $array_name = $matches[1];
                 $item_name = $matches[2];
                 $inner_template = $matches[3];
-                $rowIdentifier = $data['rowIdentifier'];
+                $rowIdentifier = $data['rowIdentifier'] ?? 'id';
                 $output = '';
                 $partial = $inner_template;
                 foreach ($data[$array_name] as $values) {

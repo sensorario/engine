@@ -10,8 +10,9 @@ class Engine
 
     private $model = [];
 
+    private ?Repository $repo = null;
+
     public function __construct(
-        private Repository $conn,
         private RenderLoops $renderLoops = new RenderLoops,
         private VarRender $varRender = new VarRender,
         private VarCounter $varCounter = new VarCounter,
@@ -32,6 +33,11 @@ class Engine
     public function setTemplateFolder(string $templateFolder)
     {
         $this->templateFolder = $templateFolder;
+    }
+
+    public function setRepo(Repository $repo)
+    {
+        $this->repo = $repo;
     }
 
     // @todo passare il model come secondo parametro
@@ -62,13 +68,13 @@ class Engine
            $component = $matches[1];
            $config = json_decode($matches[2], true);
            $grid = new Ui\Grid\Grid(
-                $this->repo,
                 $this->varRender,
                 $this->pageBuilder,
                 $this->renderLoops,
                 $this->varCounter,
                 $config,
             );
+            
            $ui = match($component) {
                 'Grid' => $grid,
            };

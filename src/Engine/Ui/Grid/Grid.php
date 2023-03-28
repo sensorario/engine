@@ -2,7 +2,6 @@
 
 namespace Sensorario\Engine\Ui\Grid;
 
-use Sensorario\Engine\Connection\Connection;
 use Sensorario\Engine\Finder;
 use Sensorario\Engine\PageBuilder;
 use Sensorario\Engine\RenderLoops;
@@ -11,8 +10,9 @@ use Sensorario\Engine\VarRender;
 
 class Grid
 {
+    private Repository $repo;
+    
     public function __construct(
-        private Repository $repo,
         private VarRender $varRender = new VarRender,
         private PageBuilder $builder = new PageBuilder(new Finder),
         private RenderLoops $renderLoops = new RenderLoops(),
@@ -30,21 +30,32 @@ class Grid
 
         // @todo introduce Request Object
         $query = [];
-        $query['p'] = (int) $_GET['p'];
+        $query['p'] = isset($_GET['p']) ? ((int) $_GET['p']) : 0;
 
         // upgrade source with current page
         $this->config['source']['currentPage'] = $query['p'];
 
+        $className = str_replace('.', '\\', $this->config['source']['repository']);
+        $this->repo = new $className;
+
+        $items = $this->repo->findPaginated(itemPerPage: $this->config['source']['itemPerPage']);
         // update model
         $this->config['model']['nextPage'] = $query['p'] + 1;
         $this->config['model']['previousPage'] = $query['p'] - 1;
         $this->config['model']['currentPage'] = $query['p'];
-        $this->config['model']['items'] = $this->repo->findPaginated();
+        $this->config['model']['items'] = $items;
         $this->config['model']['numOfRecords'] = $this->repo->count();
         $this->config['model']['numOfPages'] = (int) (
             $this->config['model']['numOfRecords'] /
             $this->config['source']['itemPerPage']
         );
+
+        var_export([
+
+
+            'numOfRecords' => $this->config['model']['numOfRecords'],
+            'itemPerPage' => $this->config['source']['itemPerPage'],
+        ]);
 
         $this->builder->preload($this->config);
 

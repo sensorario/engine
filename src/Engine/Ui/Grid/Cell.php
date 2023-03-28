@@ -12,9 +12,9 @@ class Cell
             );
         }
 
-        $fieldName = $field['field'];
-        $fieldType = $field['type'];
-        $linked = $field['linked'] === 'true';
+        $fieldName = $field['field'] ?? '';
+        $fieldType = $field['type'] ?? '';
+        $linked = isset($field['linked']) && $field['linked'] === 'true';
 
         if ($fieldType === 'text') {
             return $linked
