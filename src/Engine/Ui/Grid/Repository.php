@@ -6,7 +6,7 @@ interface Repository
 {
     public function findPaginated(int $itemPerPage = 10): array;
 
-    public function count(int $itemPerPage = 10): int;
+    public function count(): int;
 
     public function setWhereCondition(): void;
 

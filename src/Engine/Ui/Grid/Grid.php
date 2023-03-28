@@ -50,13 +50,6 @@ class Grid
             $this->config['source']['itemPerPage']
         );
 
-        var_export([
-
-
-            'numOfRecords' => $this->config['model']['numOfRecords'],
-            'itemPerPage' => $this->config['source']['itemPerPage'],
-        ]);
-
         $this->builder->preload($this->config);
 
         $content = $this->builder->apply(__DIR__ . '/templates/', 'grid');
