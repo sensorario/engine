@@ -35,7 +35,7 @@ Nel json devono essere definite due variabli: model e source. Source indica il n
 <div class="centered">
     <div class="navigate">
         pagina {{currentPage}} di {{numOfPages}}. {{numOfRecords}} items -
-        <a href="?p=0">inizio</a>
+        <a href="?p=1">inizio</a>
         <a href="?p={{previousPage}}">indietro</a>
         <a href="?p={{nextPage}}">avanti</a>
         <a href="?p={{numOfPages}}">fine</a>
