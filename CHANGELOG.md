@@ -1,9 +1,11 @@
 # Engine
 
-## v1.0 (??/??/2023)
+## v1.1 (??/??/2023)
 
- - recupera i dati usando un repository custom per ogni griglia
+ - get data using a custom repository for each grid
+ - improve errors readability in browser
+ - add new EngineFactory for a nice Engine creation
 
 ## v1.0 (25/03/2023)
 
- - [fix #2] add missing rowIdentifier field in grid configuration
+ - add missing rowIdentifier field in grid configuration
