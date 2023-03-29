@@ -38,7 +38,10 @@ class Grid
         $className = str_replace('.', '\\', $this->config['source']['repository']);
         $this->repo = new $className;
 
-        $items = $this->repo->findPaginated(itemPerPage: $this->config['source']['itemPerPage']);
+        $items = $this->repo->findPaginated(
+            itemPerPage: $this->config['source']['itemPerPage'],
+        );
+
         // update model
         $this->config['model']['nextPage'] = $query['p'] + 1;
         $this->config['model']['previousPage'] = $query['p'] - 1;
