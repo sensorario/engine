@@ -20,6 +20,7 @@ class VarRender
 
             foreach ($keys as $key) {
                 if (!isset($value[$key]) && $this->catchMissingVariable === true) {
+                    echo '<pre>';
                     throw new Exceptions\MissingVariableException(
                         sprintf('Oops! Variable "%s" is not defined. Content id %s. Defined variables are <br /> <br /><pre>%s</pre>. <br /> <br />', $key, $content, var_export($model, true))
                     );
