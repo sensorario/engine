@@ -15,10 +15,13 @@ class Cell
         $fieldName = $field['field'] ?? '';
         $fieldType = $field['type'] ?? '';
         $linked = isset($field['linked']) && $field['linked'] === 'true';
+        $linking = $field['linking']
+        ? "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.".$field['linking']."}}\">{{item.{$fieldName}}}</a></div>"
+        : "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.id}}\">{{item.{$fieldName}}}</a></div>";
 
         if ($fieldType === 'text') {
             return $linked
-                ? "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.id}}\">{{item.{$fieldName}}}</a></div>"
+                ? $linking
                 : "\n\t<div class=\"cell\">{{item.{$fieldName}}}</div>";
         }
 

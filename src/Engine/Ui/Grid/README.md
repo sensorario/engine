@@ -61,7 +61,7 @@ Ogni riga puo' avere una cella con una checkbox. Quando questa viene selezionata
 
 ### Le colonne
 
-Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra semplicemente il contenuto della cella. Se si vuole la cella puo anche rendere linkabile il testo. Se la pagina che stiamo visualizzando e' `/resource` allora il link sarà `/resource/<id>`. Nel secondo caso, invece, verrà messa una checkbox. Con un javascript di esempio sarà possibile anche rendere selezionabili singolarmente o totalmente le celle visibili. Il campo name indica quello che verrà visualizzato come titolo della colonna.
+Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra semplicemente il contenuto della cella. Se si vuole la cella puo anche rendere linkabile il testo. Se la pagina che stiamo visualizzando e' `/resource` allora il link sarà `/resource/<id>`. In alternativa con la chiave "linking" si puo indicare il campo che verra usato per creare il link: con "linking":"ean" il link verrà costruito cosiç `/resource/<ean>`. Nel secondo caso, invece, verrà messa una checkbox. Con un javascript di esempio sarà possibile anche rendere selezionabili singolarmente o totalmente le celle visibili. Il campo name indica quello che verrà visualizzato come titolo della colonna.
 
 > since version v1.1
 > non viene piu indicata la tabella ma una classe che verra poi istanziata direttamente nel nostro dominio
@@ -75,6 +75,7 @@ Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra s
         "headers": {
             {"type":"text","field":"id","name":"id"},
             {"type":"text","field":"id","name":"id", "linked":"true"},
+            { "type": "text", "field":"ean", "name": "ean", "linked":"true", "linking":"variations_id" },
             {"type":"selection","selection":"id","name":"id"}
         },
     },
