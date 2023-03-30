@@ -30,7 +30,7 @@ class Grid
 
         // @todo introduce Request Object
         $query = [];
-        $query['p'] = isset($_GET['p']) ? ((int) $_GET['p']) : 0;
+        $query['p'] = isset($_GET['p']) ? ((int) $_GET['p']) : 1;
 
         // upgrade source with current page
         $this->config['source']['currentPage'] = $query['p'];
@@ -48,7 +48,7 @@ class Grid
         $this->config['model']['currentPage'] = $query['p'];
         $this->config['model']['items'] = $items;
         $this->config['model']['numOfRecords'] = $this->repo->count();
-        $this->config['model']['numOfPages'] = (int) (
+        $this->config['model']['numOfPages'] = 1 + (int) (
             $this->config['model']['numOfRecords'] /
             $this->config['source']['itemPerPage']
         );

@@ -1,9 +1,12 @@
 <div class="centered">
     <div class="navigate">
-        pagina {{currentPage}} di {{numOfPages}}. {{numOfRecords}} items -
+        {{itemsPerPage}} items per pagina // {{numOfRecords}} record totali
+        <br />
         <a href="?p=1">inizio</a>
         <a href="?p={{previousPage}}">indietro</a>
+        | pagina {{currentPage}} di {{numOfPages}} |
         <a href="?p={{nextPage}}">avanti</a>
         <a href="?p={{numOfPages}}">fine</a>
     </div>
 </div>
+<br />
