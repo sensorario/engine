@@ -47,6 +47,7 @@ class Grid
         $this->config['model']['previousPage'] = $query['p'] - 1;
         $this->config['model']['currentPage'] = $query['p'];
         $this->config['model']['items'] = $items;
+        $this->config['model']['itemPerPage'] = $this->config['source']['itemPerPage'];
         $this->config['model']['numOfRecords'] = $this->repo->count();
         $this->config['model']['numOfPages'] = 1 + (int) (
             $this->config['model']['numOfRecords'] /
