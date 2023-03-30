@@ -11,30 +11,19 @@ Provando a fare una sorta di clone di twig, mi sono ritrovato a creare un piccol
 
 ## Come provarlo
 
+### Installazione
+
+```
+composer install sensorario/engine
+```
+
 ### Cicli
 
+*index.php*
 ```
-<ul>
-    {% foreach items as item %}
-    <li>{{item.id}}</li>
-    {% endforeach %}
-</ul>
-```
-
-```
-use Sensorario\Engine;
-
-$engine = new Engine\Engine(
-    new Engine\RenderLoops,
-    new Engine\VarRender(
-        catchMissingVariable: false,
-    ),
-    new Engine\VarCounter,
-    new Engine\PageBuilder(
-        new Engine\Finder,
-    ),
-);
-
+require __DIR__ . '/vendor/autoload.php';
+use Sensorario\Engine\EngineFactory;
+$engine = (new EngineFactory)->getEngine();
 $engine->render('prova', [
     'items' => [
         ['id' => 42],
@@ -43,6 +32,16 @@ $engine->render('prova', [
 ]);
 ```
 
+*prova.daduda.html*
+```
+<ul>
+    {% foreach items as item %}
+    <li>{{item.id}}</li>
+    {% endforeach %}
+</ul>
+```
+
+output
 ```
 <ul>
     <li>42</li>
