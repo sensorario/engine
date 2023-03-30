@@ -1,21 +1,26 @@
 {
     "name": "sensorario/engine",
-    "description": "yet another template engine",
-    "type": "library",
-    "require-dev": {
-        "phpunit/phpunit": "10.1.x-dev"
-    },
-    "autoload": {
-        "psr-4": {
-            "Sensorario\\Engine\\": "src/Engine/"
-        }
-    },
-    "authors": [
+        "description": "yet another template engine",
+        "type": "library",
+        "require-dev": {
+            "phpunit/phpunit": "10.1.x-dev"
+        },
+        "autoload": {
+            "psr-4": {
+                "Sensorario\\Engine\\": "src/Engine/"
+            }
+        },
+        "authors": [
         {
             "name": "Simone Gentili",
             "email": "sensorario@gmail.com"
         }
-    ],
-    "minimum-stability": "dev",
-    "require": {}
+        ],
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1-dev"
+            }
+        },
+        "minimum-stability": "dev",
+        "require": {}
 }
