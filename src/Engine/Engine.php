@@ -2,8 +2,6 @@
 
 namespace Sensorario\Engine;
 
-use Sensorario\Engine\Ui\Grid\Repository;
-
 class Engine
 {
     private $templateFolder;
@@ -33,11 +31,6 @@ class Engine
         $this->templateFolder = $templateFolder;
     }
 
-    public function setRepo(Repository $repo)
-    {
-        $this->repo = $repo;
-    }
-
     // @todo passare il model come secondo parametro
     public function render(string $template, $model = [], $return = false)
     {
@@ -62,21 +55,37 @@ class Engine
         //  {{componente:{"configu":"razione"}}}
        $pattern = '/\{\{([\w]+):(\{.*\})\}\}/s';
        // @todo mettere un bel check sulla validita del json
-       $content = preg_replace_callback($pattern, function($matches) {
-           $component = $matches[1];
-           $config = json_decode($matches[2], true);
-           $grid = new Ui\Grid\Grid(
-                $this->varRender,
+       $content = preg_replace_callback($pattern, function($matches) use ($template) {
+            $component = $matches[1];
+            $config = json_decode($matches[2], true);
+            $grid = new Ui\Grid\Grid(
                 $this->pageBuilder,
+                $this->varRender,
                 $this->renderLoops,
                 $this->varCounter,
                 $config,
             );
             
-           $ui = match($component) {
-                'Grid' => $grid,
-           };
-           return $ui->render();
+            $ui = match($component) {
+                    'Grid' => $grid,
+            };
+            try {
+                return $ui->render();
+
+            } catch (\Exception $e) {
+                $class = get_class($e);
+                $error = $e->getMessage();
+                $templateFolder = $this->templateFolder;
+                die(<<<PRE
+                <h1>Engine error!!!</h1>
+                <pre>
+                    Class: $class
+                    Error: $error
+                    Template: /templateFolder/$template.daduda.html
+                </pre>
+                PRE);
+            }
+
         }, $content);
 
 
