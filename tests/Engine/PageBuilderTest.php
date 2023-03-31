@@ -106,7 +106,7 @@ class PageBuilderTest extends TestCase
                 ]
             ],
             'source' => [
-                'table' => 'foo',
+                'resource' => 'foo',
             ]
         ]);
 

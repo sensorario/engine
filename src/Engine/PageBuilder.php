@@ -84,8 +84,8 @@ class PageBuilder
 
             $return = '';
             foreach ($this->preloaded['model']['headers'] as $field) {
-                // @todo rename table into resource?
-                $resource = $this->preloaded['source']['table'];
+                if (!isset($this->preloaded['source']['resource'])) { throw new \RuntimeException(sprintf('Oop! source.resource is missing in "'.var_export($this->preloaded).'"!!')); }
+                $resource = $this->preloaded['source']['resource'];
                 // @todo la risorsa dovrebbe essere dedotta dalla request/querystring
                 $return .= Ui\Grid\Cell::fromField($field, $resource);
             }

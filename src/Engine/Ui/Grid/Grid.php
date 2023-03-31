@@ -3,6 +3,7 @@
 namespace Sensorario\Engine\Ui\Grid;
 
 use Sensorario\Engine\Finder;
+use Sensorario\Engine\Http\Request;
 use Sensorario\Engine\PageBuilder;
 use Sensorario\Engine\RenderLoops;
 use Sensorario\Engine\VarCounter;
@@ -13,11 +14,12 @@ class Grid
     private Repository $repo;
     
     public function __construct(
-        private VarRender $varRender = new VarRender,
         private PageBuilder $builder = new PageBuilder(new Finder),
+        private VarRender $varRender = new VarRender,
         private RenderLoops $renderLoops = new RenderLoops(),
         private VarCounter $varCounter = new VarCounter(),
         private array $config = [],
+        private Request $request = new Request([]),
     ) { }
 
     public function render(): string
@@ -29,11 +31,18 @@ class Grid
         }
 
         // @todo introduce Request Object
-        $query = [];
-        $query['p'] = isset($_GET['p']) ? ((int) $_GET['p']) : 1;
+        $currentPage = $this->request->get('p', 1);
 
         // upgrade source with current page
         $this->config['source']['currentPage'] = $query['p'];
+
+        if (!isset($this->config['source'])) {
+            throw new \RuntimeException('source is missing');
+        }
+
+        if (!isset($this->config['source']['repository'])) {
+            throw new \RuntimeException('source.repository is missing');
+        }
 
         $className = str_replace('.', '\\', $this->config['source']['repository']);
         $this->repo = new $className;
@@ -43,9 +52,9 @@ class Grid
         );
 
         // update model
-        $this->config['model']['nextPage'] = $query['p'] + 1;
-        $this->config['model']['previousPage'] = $query['p'] - 1;
-        $this->config['model']['currentPage'] = $query['p'];
+        $this->config['model']['nextPage'] = $currentPage + 1;
+        $this->config['model']['previousPage'] = $currentPage - 1;
+        $this->config['model']['currentPage'] = $currentPage;
         $this->config['model']['items'] = $items;
         $this->config['model']['itemPerPage'] = $this->config['source']['itemPerPage'];
         $this->config['model']['numOfRecords'] = $this->repo->count();
