@@ -2,7 +2,17 @@
 
 ## Sintassi
 
-`{{Grid:<json>}}`
+```
+{{Grid:{
+    "model":{
+        "rowIdentifier":"id",
+        "title": " ... ",
+        "description": " ... ",
+        "headers": { ... },
+    },
+    "source": { ... }
+}}}
+```
 
 Nel json devono essere definite due variabli: model e source. Source indica il nome della tabella, gli elementi per pagine e orderBy se si vuole ordinare per il valore di una certa colonna.
 

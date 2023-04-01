@@ -34,6 +34,7 @@ class Engine
     // @todo passare il model come secondo parametro
     public function render(string $template, $model = [], $return = false)
     {
+        try {
         // @todo se model != []
         // per ogni chiave, ... ->addVariable(<chiave>, <valore>);
         if ($model !== []) {
@@ -42,7 +43,21 @@ class Engine
             }
         }
 
-        $content = $this->pageBuilder->apply($this->templateFolder, $template, $model);
+
+            $content = $this->pageBuilder->apply($this->templateFolder, $template, $model);
+        } catch (\Exception $e) {
+            $class = get_class($e);
+            $error = $e->getMessage();
+            $templateFolder = $this->templateFolder;
+            die(<<<PRE
+            <h1>Engine error!!!</h1>
+            <pre>
+                Class: $class
+                Error: $error
+                Template: /$templateFolder/$template.daduda.html
+            </pre>
+            PRE);
+        }
 
         // cicli
         $data = $this->model;
@@ -51,42 +66,42 @@ class Engine
         $content = $this->varRender->apply($content, $data);
         $content = $this->varCounter->apply($content, $data);
 
-
         //  {{componente:{"configu":"razione"}}}
-       $pattern = '/\{\{([\w]+):(\{.*\})\}\}/s';
-       // @todo mettere un bel check sulla validita del json
-       $content = preg_replace_callback($pattern, function($matches) use ($template) {
-            $component = $matches[1];
-            $config = json_decode($matches[2], true);
-            $grid = new Ui\Grid\Grid(
-                $this->pageBuilder,
-                $this->varRender,
-                $this->renderLoops,
-                $this->varCounter,
-                $config,
-            );
-            
-            $ui = match($component) {
-                    'Grid' => $grid,
-            };
-            try {
-                return $ui->render();
+        foreach (['View','Grid'] as $uiElement) {
+            $pattern = '/\{\{'.$uiElement.':(.*)\}\}'.$uiElement.'/s';
 
-            } catch (\Exception $e) {
+       // @todo mettere un bel check sulla validita del json
+       $content = preg_replace_callback($pattern, function($matches) use ($template, $uiElement) {
+            $ui = new \stdClass;
+            $ui->element = $matches[0];
+            $ui->conf = $matches[1];
+
+            try {
+                $ui = match($uiElement) {
+                    'Grid' => Ui\Grid\Grid::withEngine($this, json_decode($ui->conf, true)),
+                    'View' => Ui\View\View::withEngine($this, json_decode($ui->conf, true)),
+                    default => Ui\Message\Message::createWithConfig($ui),
+                };
+
+                return $ui->render();
+            } catch (\Error|\Exception $e) {
                 $class = get_class($e);
                 $error = $e->getMessage();
                 $templateFolder = $this->templateFolder;
                 die(<<<PRE
                 <h1>Engine error!!!</h1>
                 <pre>
-                    Class: $class
-                    Error: $error
-                    Template: /templateFolder/$template.daduda.html
+                Conf: $ui->conf
+                Class: $class
+                Error: $error
+                Template: /$templateFolder/$template.daduda.html
                 </pre>
                 PRE);
             }
 
         }, $content);
+
+        }
 
 
         if ($return === false) {
@@ -102,5 +117,10 @@ class Engine
             http_response_code(403);
             exit;
         }
+    }
+
+    public function getVariableRender()
+    {
+        return $this->varRender;
     }
 }

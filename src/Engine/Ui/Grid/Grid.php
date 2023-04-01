@@ -2,31 +2,50 @@
 
 namespace Sensorario\Engine\Ui\Grid;
 
+use Sensorario\Engine\Engine;
 use Sensorario\Engine\Finder;
 use Sensorario\Engine\Http\Request;
 use Sensorario\Engine\PageBuilder;
 use Sensorario\Engine\RenderLoops;
+use Sensorario\Engine\Ui\EngineElement;
 use Sensorario\Engine\VarCounter;
 use Sensorario\Engine\VarRender;
 
-class Grid
+class Grid implements EngineElement
 {
     private Repository $repo;
     
-    public function __construct(
+    private function __construct(
         private PageBuilder $builder = new PageBuilder(new Finder),
         private VarRender $varRender = new VarRender,
         private RenderLoops $renderLoops = new RenderLoops(),
         private VarCounter $varCounter = new VarCounter(),
-        private array $config = [],
         private Request $request = new Request([]),
+        private array $config = [],
     ) { }
+
+    public static function createWithConfig(\stdClass $config): EngineElement
+    {
+        return new Grid();
+    }
+
+    public static function withEngine(Engine $engine, array $config): EngineElement
+    {
+        return new Grid(
+            new PageBuilder(new Finder),
+            $engine->getVariableRender(),
+            new RenderLoops(),
+            new VarCounter(),
+            new Request([]),
+            $config,
+        );
+    }
 
     public function render(): string
     {
         if (!isset($this->config['model']['rowIdentifier'])) {
             throw new Exceptions\MissingRowIdentifierException(
-                sprintf('Oops! Missing row identifier')
+                sprintf('Oops! Missing model.rowIdentifier')
             );
         }
 
@@ -65,6 +84,7 @@ class Grid
 
         $this->builder->preload($this->config);
 
+        // @todo remove duplication
         $content = $this->builder->apply(__DIR__ . '/templates/', 'grid');
         $content = $this->renderLoops->apply($content, $this->config['model']);
         $content = $this->varRender->apply($content, $this->config['model']);

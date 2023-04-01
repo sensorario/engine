@@ -1,8 +1,9 @@
 # Engine
 
-## v1.0 (??/??/2023)
+## v1.1 (??/??/2023)
 
- - recupera i dati usando un repository custom per ogni griglia
+ - add custom repository to each component
+ - add Grid, View and Message component
 
 ## v1.0 (25/03/2023)
 
