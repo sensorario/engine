@@ -53,7 +53,7 @@ class Grid implements EngineElement
         $currentPage = $this->request->get('p', 1);
 
         // upgrade source with current page
-        $this->config['source']['currentPage'] = $query['p'];
+        $this->config['source']['currentPage'] = $currentPage;
 
         if (!isset($this->config['source'])) {
             throw new \RuntimeException('source is missing');
@@ -67,7 +67,7 @@ class Grid implements EngineElement
         $this->repo = new $className;
 
         $items = $this->repo->findPaginated(
-            itemPerPage: $this->config['source']['itemPerPage'],
+            itemPerPage: $this->config['source']['itemPerPage'] ?? 10,
         );
 
         // update model
@@ -75,7 +75,7 @@ class Grid implements EngineElement
         $this->config['model']['previousPage'] = $currentPage - 1;
         $this->config['model']['currentPage'] = $currentPage;
         $this->config['model']['items'] = $items;
-        $this->config['model']['itemPerPage'] = $this->config['source']['itemPerPage'];
+        $this->config['model']['itemPerPage'] = $this->config['source']['itemPerPage'] ?? 10;
         $this->config['model']['numOfRecords'] = $this->repo->count();
         $this->config['model']['numOfPages'] = 1 + (int) (
             $this->config['model']['numOfRecords'] /

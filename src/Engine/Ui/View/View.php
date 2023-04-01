@@ -32,7 +32,7 @@ class View implements EngineElement
 
         // @todo remove duplication
         $content = $this->builder->apply(__DIR__ . '/templates/', 'view');
-        $content = $this->varRender->apply($content, $this->config['model']);
+        $content = $this->varRender->apply($content, $this->config['model'] ?? []);
         // $content = $this->renderLoops->apply($content, $this->config['model']);
         // $content = $this->varCounter->apply($content, $this->config['model']);
 

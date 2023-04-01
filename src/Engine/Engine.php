@@ -4,7 +4,7 @@ namespace Sensorario\Engine;
 
 class Engine
 {
-    private $templateFolder;
+    private $templateFolder = '';
 
     private $model = [];
 
@@ -28,13 +28,18 @@ class Engine
 
     public function setTemplateFolder(string $templateFolder)
     {
+        // @todo il nome della cartella deve terminare con '/'
         $this->templateFolder = $templateFolder;
     }
 
     // @todo passare il model come secondo parametro
-    public function render(string $template, $model = [], $return = false)
+    public function render(string $template = 'templates', $model = [], $return = false)
     {
         try {
+
+            if ($this->templateFolder == '') {
+                throw new \RuntimeException('Oops! Template folder is not defined');
+            }
         // @todo se model != []
         // per ogni chiave, ... ->addVariable(<chiave>, <valore>);
         if ($model !== []) {
@@ -45,19 +50,6 @@ class Engine
 
 
             $content = $this->pageBuilder->apply($this->templateFolder, $template, $model);
-        } catch (\Exception $e) {
-            $class = get_class($e);
-            $error = $e->getMessage();
-            $templateFolder = $this->templateFolder;
-            die(<<<PRE
-            <h1>Engine error!!!</h1>
-            <pre>
-                Class: $class
-                Error: $error
-                Template: /$templateFolder/$template.daduda.html
-            </pre>
-            PRE);
-        }
 
         // cicli
         $data = $this->model;
@@ -76,28 +68,13 @@ class Engine
             $ui->element = $matches[0];
             $ui->conf = $matches[1];
 
-            try {
-                $ui = match($uiElement) {
-                    'Grid' => Ui\Grid\Grid::withEngine($this, json_decode($ui->conf, true)),
-                    'View' => Ui\View\View::withEngine($this, json_decode($ui->conf, true)),
-                    default => Ui\Message\Message::createWithConfig($ui),
-                };
-
-                return $ui->render();
-            } catch (\Error|\Exception $e) {
-                $class = get_class($e);
-                $error = $e->getMessage();
-                $templateFolder = $this->templateFolder;
-                die(<<<PRE
-                <h1>Engine error!!!</h1>
-                <pre>
-                Conf: $ui->conf
-                Class: $class
-                Error: $error
-                Template: /$templateFolder/$template.daduda.html
-                </pre>
-                PRE);
-            }
+            $ui = match($uiElement) {
+                'Grid' => Ui\Grid\Grid::withEngine($this, json_decode($ui->conf, true)),
+                'View' => Ui\View\View::withEngine($this, json_decode($ui->conf, true)),
+                default => Ui\Message\Message::createWithConfig($ui),
+            };
+            
+            return $ui->render();
 
         }, $content);
 
@@ -109,6 +86,19 @@ class Engine
         }
 
         return $content;
+        } catch (\Error|\Exception $e) {
+            $class = get_class($e);
+            $error = $e->getMessage();
+            $templateFolder = $this->templateFolder;
+            die(<<<PRE
+            <h1>Engine error!!!</h1>
+            <pre>
+            Class: $class
+            Error: $error
+            Template: $templateFolder/$template.daduda.html
+            </pre>
+            PRE);
+        }
     }
 
     public function redirectIfNotAuthenticated()

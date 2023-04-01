@@ -79,7 +79,7 @@ class PageBuilder
         if ($matches != []) {
 
             if (!isset($this->preloaded['model']['headers'])) {
-                throw new Exceptions\MissingHeadersException;
+                throw new Ui\Grid\Exceptions\MissingHeadersException();
             } 
 
             $return = '';

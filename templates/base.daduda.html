@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Engine</title>
+</head>
+
+<body>
+    <h1>{% block title %}Titolo di default{% endblock title %}</h1>
+
+    {{View:{
+        "model": {
+            "title":"Ricerca"
+        }
+    }}}View
+    
+    {{Grid:{
+        "source":{
+            "repository":"Sensorario.Engine.ExampleRepo",
+            "resource":"",
+            "itemPerPage":"2"
+        },
+        "model":{
+            "title":"Griglia",
+            "headers": [
+                { "type" : "text" , "field" : "name", "name" : "NOME" },
+                { "type" : "text" , "field" : "surname", "name" : "COGNOME" }
+            ],
+            "rowIdentifier":"id"
+        }
+    }}}Grid
+
+</body>
+
+</html>
