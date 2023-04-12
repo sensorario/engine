@@ -14,15 +14,16 @@ use Sensorario\Engine\VarRender;
 class Grid implements EngineElement
 {
     private Repository $repo;
-    
+
     private function __construct(
-        private PageBuilder $builder = new PageBuilder(new Finder),
-        private VarRender $varRender = new VarRender,
+        private PageBuilder $builder = new PageBuilder(new Finder()),
+        private VarRender $varRender = new VarRender(),
         private RenderLoops $renderLoops = new RenderLoops(),
         private VarCounter $varCounter = new VarCounter(),
         private Request $request = new Request([]),
         private array $config = [],
-    ) { }
+    ) {
+    }
 
     public static function createWithConfig(\stdClass $config): EngineElement
     {
@@ -32,7 +33,7 @@ class Grid implements EngineElement
     public static function withEngine(Engine $engine, array $config): EngineElement
     {
         return new Grid(
-            new PageBuilder(new Finder),
+            new PageBuilder(new Finder()),
             $engine->getVariableRender(),
             new RenderLoops(),
             new VarCounter(),
@@ -64,7 +65,7 @@ class Grid implements EngineElement
         }
 
         $className = str_replace('.', '\\', $this->config['source']['repository']);
-        $this->repo = new $className;
+        $this->repo = new $className();
 
         $items = $this->repo->findPaginated(
             itemPerPage: $this->config['source']['itemPerPage'] ?? 10,

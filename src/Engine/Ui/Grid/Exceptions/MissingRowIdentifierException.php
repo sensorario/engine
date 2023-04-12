@@ -2,4 +2,6 @@
 
 namespace Sensorario\Engine\Ui\Grid\Exceptions;
 
-class MissingRowIdentifierException extends \Exception {}
+class MissingRowIdentifierException extends \Exception
+{
+}

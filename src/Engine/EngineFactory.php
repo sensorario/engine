@@ -12,7 +12,7 @@ class EngineFactory
 {
     public function __construct()
     {
-        
+
     }
 
     public function getEngine()
@@ -22,9 +22,9 @@ class EngineFactory
             new VarRender(
                 catchMissingVariable: false,
             ),
-            new VarCounter,
+            new VarCounter(),
             new PageBuilder(
-                new Finder,
+                new Finder(),
             ),
         );
     }

@@ -8,7 +8,8 @@ class PageBuilder
 
     public function __construct(
         private Finder $finder = new Finder(),
-    ) { }
+    ) {
+    }
 
     public function preload(array $config)
     {
@@ -74,13 +75,40 @@ class PageBuilder
             $content = str_replace('{% include '.$tpl.' %}', $fileContent, $content);
         }
 
+        // if statements
+        $re = '/{% if (.*?) %}(.*?){% endif %}/m';
+        preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
+        if ($matches != []) {
+            if(count(explode(' ', $matches[0][1])) === 1) {
+                $content = str_replace(
+                    '{% if '.$matches[0][1].' %}'.$matches[0][2].'{% endif %}',
+                    $this->preloaded['model'][$matches[0][1]] === true ? $matches[0][2] : '',
+                    $content
+                );
+            }
+            if(count(explode(' ', $matches[0][1])) === 3) {
+                [$condition, $operand, $value] = explode(' ', $matches[0][1]);
+                if ($operand != 'is') {
+                    throw new \RuntimeException('Oops! Unknown operand');
+                }
+                [$key1, $key2] = explode('.', $condition);
+                if ($this->preloaded['model'][$key1][$key2] == $value) {
+                    $content = str_replace(
+                        '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}',
+                        $matches[0][2],
+                        $content
+                    );
+                }
+            }
+        }
+
         $re = '/(?s){% explode fields %}/m';
         preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
         if ($matches != []) {
 
             if (!isset($this->preloaded['model']['headers'])) {
                 throw new Ui\Grid\Exceptions\MissingHeadersException();
-            } 
+            }
 
             $return = '';
             foreach ($this->preloaded['model']['headers'] as $field) {

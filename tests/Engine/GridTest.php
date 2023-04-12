@@ -13,7 +13,7 @@ use Sensorario\Engine\Ui\Grid\Grid;
 use Sensorario\Engine\Ui\Grid\Repository;
 use Sensorario\Engine\VarCounter;
 use Sensorario\Engine\VarRender;
-use SimpleXMLElement;
+use Sensorario\Engine\Engine;
 
 class FakeClass implements Repository
 {
@@ -38,19 +38,25 @@ class FakeClass implements Repository
 
 class GridTest extends TestCase
 {
+    private Engine $engine;
+
+    public function setUp(): void
+    {
+        $this->engine = new Engine(
+            new RenderLoops,
+            new VarRender,
+            new VarCounter,
+            new PageBuilder,
+        ); // $this->getMockBuilder(Engine::class)->getMock();
+    }
+
     /** @test */
     public function shouldThrowExceptionWheneverRowIdentifierIsMissing()
     {
         $this->expectException(MissingRowIdentifierException::class);
-        $this->expectExceptionMessage('Oops! Missing row identifier');
+        $this->expectExceptionMessage('Oops! Missing model.rowIdentifier');
 
-        $grid = new Grid(
-            new PageBuilder(new Finder),
-            new VarRender(),
-            new RenderLoops(),
-            new VarCounter,
-            [ ]
-        );
+        $grid = Grid::withEngine($this->engine, []);
 
         $grid->render();
     }
@@ -58,12 +64,7 @@ class GridTest extends TestCase
     /** @test */
     public function shouldRenderPagination()
     {
-        $grid = new Grid(
-            new PageBuilder(new Finder),
-            new VarRender,
-            new RenderLoops,
-            new VarCounter,
-            [
+        $grid = Grid::withEngine($this->engine, [
                 'model' => [
                     'title' => 'titolo',
                     'description' => 'descrizione',
@@ -101,11 +102,8 @@ class GridTest extends TestCase
     /** @test */
     public function shouldRe()
     {
-        $grid = new Grid(
-            new PageBuilder(new Finder),
-            new VarRender,
-            new RenderLoops,
-            new VarCounter,
+        $grid = Grid::withEngine(
+            $this->engine,
             [
                 'model' => [
                     'title' => 'titolo',

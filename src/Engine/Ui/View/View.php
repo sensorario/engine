@@ -14,13 +14,14 @@ use Sensorario\Engine\VarRender;
 class View implements EngineElement
 {
     private function __construct(
-        private PageBuilder $builder = new PageBuilder(new Finder),
-        private VarRender $varRender = new VarRender,
+        private PageBuilder $builder = new PageBuilder(new Finder()),
+        private VarRender $varRender = new VarRender(),
         private RenderLoops $renderLoops = new RenderLoops(),
         private VarCounter $varCounter = new VarCounter(),
         private Request $request = new Request([]),
         private array $config = [],
-    ) { }
+    ) {
+    }
 
     public static function createWithConfig(\stdClass $config): EngineElement
     {
@@ -42,7 +43,7 @@ class View implements EngineElement
     public static function withEngine(Engine $engine, array $config): EngineElement
     {
         return new View(
-            new PageBuilder(new Finder),
+            new PageBuilder(new Finder()),
             new VarRender(),
             new RenderLoops(),
             new VarCounter(),
