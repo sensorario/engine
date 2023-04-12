@@ -2,14 +2,13 @@
 
 namespace Sensorario\Test\Engine;
 
-use Sensorario\Engine\Engine;
 use Sensorario\Engine\Exceptions;
 use Sensorario\Engine\Finder;
-use Sensorario\Engine\RenderLoops;
-use Sensorario\Engine\VarRender;
-use Sensorario\Engine\VarCounter;
 use Sensorario\Engine\PageBuilder;
 use PHPUnit\Framework\TestCase;
+
+// @todo ha senso testare la griglia qui e non in GridTest???
+use Sensorario\Engine\Ui\Grid\Exceptions\MissingHeadersException;
 
 class PageBuilderTest extends TestCase
 {
@@ -27,7 +26,7 @@ class PageBuilderTest extends TestCase
     /** @test */
     public function shouldThrowExceptionWheneverHeadersAreNotDefined()
     {
-        $this->expectException(Exceptions\MissingHeadersException::class);
+        $this->expectException(MissingHeadersException::class);
 
         $this->finder->expects($this->once())
             ->method('notExists')
@@ -119,5 +118,72 @@ class PageBuilderTest extends TestCase
         $tab<div class="cell">{{item.}}</div>
         </div>
         ENGINE, $result);
+    }
+
+    /**
+     * @test
+     * @dataProvider statements
+     **/
+    public function testSomethign($tpl, $model, $output)
+    {
+        $this->finder->expects($this->once())
+            ->method('notExists')
+            ->willReturn(false);
+        $this->finder->expects($this->once())
+            ->method('getFileContent')
+            ->willReturn($tpl);
+
+        $this->pageBuilder = new PageBuilder(
+            $this->finder,
+        );
+
+        $this->pageBuilder->preload([
+            'model' => $model,
+        ]);
+
+        $result = $this->pageBuilder->apply('tplfolder', 'tplname');
+
+        $this->assertSame($output, $result);
+    }
+
+    public static function statements () {
+        return [
+            ['{% if varname %}abc{% endif %}', ['varname'=> true], 'abc'],
+            ['{% if varname %}abc{% endif %}', ['varname'=> false], ''],
+            ['{% if varname %}abc{% endif %}', ['varname'=> 'false'], ''],
+            ['{% if varname %}abc{% endif %}', ['varname'=> 'true'], ''],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider foo
+     **/
+    public function testSomethignFoo($tpl, $model, $output)
+    {
+        $this->finder->expects($this->once())
+            ->method('notExists')
+            ->willReturn(false);
+        $this->finder->expects($this->once())
+            ->method('getFileContent')
+            ->willReturn($tpl);
+
+        $this->pageBuilder = new PageBuilder(
+            $this->finder,
+        );
+
+        $this->pageBuilder->preload([
+            'model' => $model,
+        ]);
+
+        $result = $this->pageBuilder->apply('tplfolder', 'tplname');
+
+        $this->assertSame($output, $result);
+    }
+
+    public static function foo () {
+        return [
+            ['{% if user.role is admin %}you ar administrator{% endif %}', ['user'=> [ 'role' => 'admin' ]], 'you ar administrator'],
+        ];
     }
 }
