@@ -6,12 +6,13 @@ class VarRender
 {
     public function __construct(
         private bool $catchMissingVariable = true
-    ) {}
+    ) {
+    }
 
     public function apply($content, $model)
     {
         $re = '/{{([\w\.]+)}}/m';
-        
+
         preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
 
         foreach (array_unique(array_column($matches, 1)) as $var) {

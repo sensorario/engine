@@ -5,9 +5,10 @@ namespace Sensorario\Engine;
 class RenderLoops
 {
     public function __construct(
-        private VarRender $varRender = new VarRender,
-        private VarCounter $varCounter = new VarCounter,
-    ) { }
+        private VarRender $varRender = new VarRender(),
+        private VarCounter $varCounter = new VarCounter(),
+    ) {
+    }
 
     public function apply($content, $data)
     {
@@ -23,8 +24,9 @@ class RenderLoops
                 foreach ($data[$array_name] as $values) {
                     if ($array_name === 'items') {
                         $values['rowIdentifier'] = $values[$rowIdentifier];
-                        if ($values[$rowIdentifier] == null)
-                            continue; // @todo verificare se non sia la fine del file
+                        if ($values[$rowIdentifier] == null) {
+                            continue;
+                        } // @todo verificare se non sia la fine del file
                     }
 
                     $partial = $this->varRender->apply($partial, [ $item_name => $values ]);

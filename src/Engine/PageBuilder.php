@@ -8,7 +8,8 @@ class PageBuilder
 
     public function __construct(
         private Finder $finder = new Finder(),
-    ) { }
+    ) {
+    }
 
     public function preload(array $config)
     {
@@ -87,11 +88,11 @@ class PageBuilder
             }
             if(count(explode(' ', $matches[0][1])) === 3) {
                 [$condition, $operand, $value] = explode(' ', $matches[0][1]);
-                if ($operand != 'is') throw new \RuntimeException('Oops! Unknown operand');
+                if ($operand != 'is') {
+                    throw new \RuntimeException('Oops! Unknown operand');
+                }
                 [$key1, $key2] = explode('.', $condition);
                 if ($this->preloaded['model'][$key1][$key2] == $value) {
-                    // echo '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}';die;
-                    // var_export($matches[0][2]);die;
                     $content = str_replace(
                         '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}',
                         $matches[0][2],
@@ -107,7 +108,7 @@ class PageBuilder
 
             if (!isset($this->preloaded['model']['headers'])) {
                 throw new Ui\Grid\Exceptions\MissingHeadersException();
-            } 
+            }
 
             $return = '';
             foreach ($this->preloaded['model']['headers'] as $field) {

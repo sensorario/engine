@@ -50,7 +50,7 @@ class Cell
                 </div>
             HTML;
         }
-        
+
         return "\n\t<div class=\"cell\">## {type}.{$fieldType} ##</div>";
     }
 }

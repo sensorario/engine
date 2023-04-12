@@ -2,4 +2,6 @@
 
 namespace Sensorario\Engine\Exceptions;
 
-class EmptyValueException extends \Exception { }
+class EmptyValueException extends \Exception
+{
+}

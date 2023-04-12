@@ -21,7 +21,7 @@ class VarCounter
                 $subject = $model[$entity][$field];
             }
 
-            if (strpos($var, '.') === false ) {
+            if (strpos($var, '.') === false) {
                 if (!isset($model[$var])) {
                     throw new \RuntimeException(
                         sprintf('Oops! Variable "%s" is not defined.', $var)
@@ -30,7 +30,7 @@ class VarCounter
 
                 $subject = $model[$var];
             }
-            
+
             $content = str_replace('{{count ' . $var . '}}', count($subject), $content);
         }
 
