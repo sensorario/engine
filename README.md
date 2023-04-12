@@ -12,23 +12,16 @@
 composer install sensorario/engine
 ```
 
-### Template engine
-
-*index.php*
+### Usage
 
 ```
 require __DIR__ . '/vendor/autoload.php';
 use Sensorario\Engine\EngineFactory;
 $engine = (new EngineFactory)->getEngine();
-$engine->render('prova', [
-    'items' => [
-        ['id' => 42],
-        ['id' => 43],
-    ]
-]);
+$engine->render('template', $model);
 ```
 
-*prova.daduda.html*
+### Foreach
 
 ```
 <ul>
@@ -38,10 +31,10 @@ $engine->render('prova', [
 </ul>
 ```
 
-output
+### If statement
+
 ```
-<ul>
-    <li>42</li>
-    <li>43</li>
-</ul>
+{% if foo.bar is 42 %}
+
+{% endif %}
 ```
