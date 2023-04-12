@@ -49,7 +49,7 @@ class Engine
                 }
             }
 
-
+            $this->pageBuilder->preload($model);
             $content = $this->pageBuilder->apply($this->templateFolder, $template, $model);
 
             // cicli

@@ -137,9 +137,7 @@ class PageBuilderTest extends TestCase
             $this->finder,
         );
 
-        $this->pageBuilder->preload([
-            'model' => $model,
-        ]);
+        $this->pageBuilder->preload($model);
 
         $result = $this->pageBuilder->apply('tplfolder', 'tplname');
 
@@ -172,9 +170,7 @@ class PageBuilderTest extends TestCase
             $this->finder,
         );
 
-        $this->pageBuilder->preload([
-            'model' => $model,
-        ]);
+        $this->pageBuilder->preload($model);
 
         $result = $this->pageBuilder->apply('tplfolder', 'tplname');
 

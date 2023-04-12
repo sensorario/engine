@@ -82,7 +82,7 @@ class PageBuilder
             if(count(explode(' ', $matches[0][1])) === 1) {
                 $content = str_replace(
                     '{% if '.$matches[0][1].' %}'.$matches[0][2].'{% endif %}',
-                    $this->preloaded['model'][$matches[0][1]] === true ? $matches[0][2] : '',
+                    $this->preloaded[$matches[0][1]] === true ? $matches[0][2] : '',
                     $content
                 );
             }
@@ -92,7 +92,7 @@ class PageBuilder
                     throw new \RuntimeException('Oops! Unknown operand');
                 }
                 [$key1, $key2] = explode('.', $condition);
-                if ($this->preloaded['model'][$key1][$key2] == $value) {
+                if ($this->preloaded[$key1][$key2] == $value) {
                     $content = str_replace(
                         '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}',
                         $matches[0][2],
