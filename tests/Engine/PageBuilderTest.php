@@ -180,6 +180,7 @@ class PageBuilderTest extends TestCase
     public static function foo () {
         return [
             ['{% if user.role is admin %}you ar administrator{% endif %}', ['user'=> [ 'role' => 'admin' ]], 'you ar administrator'],
+            ['{% if user.role is altro %}you ar administrator{% endif %}', ['user'=> [ 'role' => 'admin' ]], ''],
         ];
     }
 }

@@ -92,13 +92,12 @@ class PageBuilder
                     throw new \RuntimeException('Oops! Unknown operand');
                 }
                 [$key1, $key2] = explode('.', $condition);
-                if ($this->preloaded[$key1][$key2] == $value) {
-                    $content = str_replace(
-                        '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}',
-                        $matches[0][2],
-                        $content
-                    );
-                }
+                $with = $this->preloaded[$key1][$key2] == $value ? $matches[0][2] : '';
+                $content = str_replace(
+                    '{% if '.$key1.'.'.$key2.' is '.$value.' %}'.$matches[0][2].'{% endif %}',
+                    $with,
+                    $content
+                );
             }
         }
 
