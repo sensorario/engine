@@ -43,10 +43,10 @@ class GridTest extends TestCase
     public function setUp(): void
     {
         $this->engine = new Engine(
-            new RenderLoops,
-            new VarRender,
-            new VarCounter,
-            new PageBuilder,
+            new RenderLoops(),
+            new VarRender(),
+            new VarCounter(),
+            new PageBuilder(),
         ); // $this->getMockBuilder(Engine::class)->getMock();
     }
 
@@ -64,7 +64,9 @@ class GridTest extends TestCase
     /** @test */
     public function shouldRenderPagination()
     {
-        $grid = Grid::withEngine($this->engine, [
+        $grid = Grid::withEngine(
+            $this->engine,
+            [
                 'model' => [
                     'title' => 'titolo',
                     'description' => 'descrizione',
@@ -79,7 +81,7 @@ class GridTest extends TestCase
         );
 
         $output = $grid->render();
-        
+
         $this->assertXpath($output, '//div[@class="navigate"][1]/a[1]', 'inizio');
         $this->assertXpath($output, '//div[@class="navigate"][1]/a[2]', 'indietro');
         $this->assertXpath($output, '//div[@class="navigate"][1]/a[3]', 'avanti');

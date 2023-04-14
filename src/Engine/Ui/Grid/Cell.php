@@ -38,12 +38,30 @@ class Cell
 
         if ($fieldType === 'form') {
             // @todo each type must have its own meta field to get detailed informationsjj
-            $actions = $field['actions'];
-            if ($actions == '') {
+            if (!isset($field['actions']) || $field['actions'] == '') {
                 throw new \RuntimeException(
                     sprintf('Oops! Actions is missing for selection filed type')
                 );
             }
+
+            if (isset($field['actions']) && !is_array($field['actions'])) {
+                throw new \RuntimeException(
+                    sprintf('Oops! Actions must be an array')
+                );
+            }
+
+            if (count($field['actions']) === 0) {
+                throw new \RuntimeException(
+                    sprintf('Oops! Actions cant be an empty array')
+                );
+            }
+
+            if ($field['actions'] != ['delete']) {
+                throw new \RuntimeException(
+                    sprintf('Oops! Available actions is "delete"')
+                );
+            }
+
             return <<<HTML
                 <div class="cell">
                     <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
