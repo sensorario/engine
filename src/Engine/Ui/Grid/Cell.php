@@ -43,7 +43,7 @@ class Cell
             // @todo each type must have its own meta field to get detailed informationsjj
             if (!isset($field['actions']) || $field['actions'] == '') {
                 throw new \RuntimeException(
-                    sprintf('Oops! Actions is missing for selection filed type')
+                    sprintf('Oops! Actions are missing for selection filed type')
                 );
             }
 
@@ -73,7 +73,7 @@ class Cell
             }
 
             throw new \RuntimeException(
-                sprintf('Oops! Available actions is "delete"')
+                sprintf('Oops! Available actions are "delete"')
             );
         }
 

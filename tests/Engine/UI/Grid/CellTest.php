@@ -13,7 +13,7 @@ class CellTest extends TestCase
     public function throwExceptionWheneverActionsIsNotDefined(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Oops! Actions is missing for selection filed type');
+        $this->expectExceptionMessage('Oops! Actions are missing for selection filed type');
 
         $field = [];
         $field['type'] = 'form';
@@ -56,7 +56,7 @@ class CellTest extends TestCase
     public function shouldCheckIdActionsIsNotEqualsToDelete(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Oops! Available actions is "delete"');
+        $this->expectExceptionMessage('Oops! Available actions are "delete"');
 
         $field = [];
         $field['type'] = 'form';
@@ -69,7 +69,7 @@ class CellTest extends TestCase
     public function shouldNeverRenderWheneverActionsInNotAllowed(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Oops! Available actions is "delete"');
+        $this->expectExceptionMessage('Oops! Available actions are "delete"');
 
         $field = [];
         $field['type'] = 'form';
