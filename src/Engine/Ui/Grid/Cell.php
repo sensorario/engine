@@ -2,6 +2,9 @@
 
 namespace Sensorario\Engine\Ui\Grid;
 
+use Sensorario\Engine\Ui\Grid\Dictionary\AllowedActions;
+use Sensorario\Tools\PermissionMatcher;
+
 class Cell
 {
     public static function fromField(array $field, string $resource): string
@@ -56,17 +59,22 @@ class Cell
                 );
             }
 
-            if ($field['actions'] != ['delete']) {
-                throw new \RuntimeException(
-                    sprintf('Oops! Available actions is "delete"')
-                );
-            }
+            $checker = new PermissionMatcher(
+                $field['actions'],
+                AllowedActions::toArray(),
+            );
 
-            return <<<HTML
+            if ($checker->areNeedlesInHayStack()) {
+                return <<<HTML
                 <div class="cell">
                     <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
                 </div>
-            HTML;
+                HTML;
+            }
+
+            throw new \RuntimeException(
+                sprintf('Oops! Available actions is "delete"')
+            );
         }
 
         return "\n\t<div class=\"cell\">## {type}.{$fieldType} ##</div>";

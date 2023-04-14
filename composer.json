@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Sensorario\\Engine\\": "src/Engine/"
+            "Sensorario\\": "src/"
         }
     },
     "config": {

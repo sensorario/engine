@@ -66,7 +66,7 @@ class CellTest extends TestCase
     }
 
     /** @test */
-    public function shouldRender(): void
+    public function shouldNeverRenderWheneverActionsInNotAllowed(): void
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Oops! Available actions is "delete"');
@@ -75,11 +75,21 @@ class CellTest extends TestCase
         $field['type'] = 'form';
         $field['actions'] = ['foo'];
         $resource = 'string';
+        Cell::fromField($field, $resource);
+    }
+
+    /** @test */
+    public function shouldRenderWheneverActionsAreInTheListOfAllowedActions(): void
+    {
+        $field = [];
+        $field['type'] = 'form';
+        $field['actions'] = ['delete'];
+        $resource = 'string';
         $output = Cell::fromField($field, $resource);
         $this->assertEquals(<<<HTML
-            <div class="cell">
-                <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
-            </div>
+        <div class="cell">
+            <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+        </div>
         HTML, $output);
     }
 }
