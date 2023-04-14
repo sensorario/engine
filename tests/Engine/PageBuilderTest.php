@@ -110,7 +110,7 @@ class PageBuilderTest extends TestCase
         ]);
 
         $result = $this->pageBuilder->apply('tplfolder', 'tplname');
-        
+
         $tab = "\t";
         $this->assertEquals(<<<ENGINE
         <div class="row" id="id-{{item.rowIdentifier}}">
@@ -144,7 +144,8 @@ class PageBuilderTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public static function statements () {
+    public static function statements()
+    {
         return [
             ['{% if varname %}abc{% endif %}', ['varname'=> true], 'abc'],
             ['{% if varname %}abc{% endif %}', ['varname'=> false], ''],
@@ -177,7 +178,8 @@ class PageBuilderTest extends TestCase
         $this->assertSame($output, $result);
     }
 
-    public static function foo () {
+    public static function foo()
+    {
         return [
             ['{% if foo.bar is altro %}aaaa{% endif %}{% if user.role is admin %}bbbb{% endif %}', ['user'=> [ 'role' => 'admin' ], 'foo'=> [ 'bar' => 'altro' ]], 'aaaabbbb'],
             ['{% if user.role is altro %}aaaa{% endif %}{% if user.role is admin %}bbbb{% endif %}', ['user'=> [ 'role' => 'admin' ]], 'bbbb'],

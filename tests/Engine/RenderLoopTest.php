@@ -10,7 +10,7 @@ class RenderLoopTest extends TestCase
     /** @test */
     public function shouldThrowExceptionWheneverRowIdentifierIsMissing()
     {
-        $loops = new RenderLoops;
+        $loops = new RenderLoops();
         $result = $loops->apply(<<<ENGINE
         {% foreach items as item %}
         <li>{{item.id}}</li>
