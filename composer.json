@@ -11,6 +11,9 @@
             "Sensorario\\Engine\\": "src/Engine/"
         }
     },
+    "config": {
+        "bin-dir": "bin"
+    },
     "authors": [
         {
             "name": "Simone Gentili",

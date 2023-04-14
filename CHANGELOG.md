@@ -5,6 +5,7 @@
 ### fixes
 
  - [fix: #19] - ensure actions value is an array
+ - [fix: #20] - wrong bin dir path in config.json
  
 ### enhancements
 
