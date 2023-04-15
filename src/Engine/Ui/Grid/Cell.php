@@ -3,6 +3,7 @@
 namespace Sensorario\Engine\Ui\Grid;
 
 use Sensorario\Engine\Ui\Grid\Dictionary\AllowedActions;
+use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldTypeException;
 use Sensorario\Tools\PermissionMatcher;
 
 class Cell
@@ -10,9 +11,7 @@ class Cell
     public static function fromField(array $field, string $resource): string
     {
         if (!isset($field['type'])) {
-            throw new \RuntimeException(
-                sprintf('Oops! Missing field type in field %s.', var_export($field, true))
-            );
+            throw new MissingFieldTypeException();
         }
 
         $fieldName = $field['field'] ?? '';

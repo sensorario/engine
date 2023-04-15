@@ -6,9 +6,21 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SebastianBergmann\Template\Template;
 use Sensorario\Engine\Ui\Grid\Cell;
+use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldTypeException;
 
 class CellTest extends TestCase
 {
+    /** @test */
+    public function throwExceptionWheneverTypeIsMissing(): void
+    {
+        $this->expectException(MissingFieldTypeException::class);
+        $this->expectExceptionMessage('Oops! Missing field type in configuration.');
+
+        $field = [];
+        $resource = 'string';
+        Cell::fromField($field, $resource);
+    }
+
     /** @test */
     public function throwExceptionWheneverActionsIsNotDefined(): void
     {
