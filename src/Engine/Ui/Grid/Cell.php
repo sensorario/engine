@@ -3,6 +3,7 @@
 namespace Sensorario\Engine\Ui\Grid;
 
 use Sensorario\Engine\Ui\Grid\Dictionary\AllowedActions;
+use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldActionsException;
 use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldTypeException;
 use Sensorario\Tools\PermissionMatcher;
 
@@ -41,9 +42,7 @@ class Cell
         if ($fieldType === 'form') {
             // @todo each type must have its own meta field to get detailed informationsjj
             if (!isset($field['actions']) || $field['actions'] == '') {
-                throw new \RuntimeException(
-                    sprintf('Oops! Actions are missing for selection filed type')
-                );
+                throw new MissingFieldActionsException();
             }
 
             if (isset($field['actions']) && !is_array($field['actions'])) {
