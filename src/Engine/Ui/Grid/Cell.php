@@ -5,6 +5,10 @@ namespace Sensorario\Engine\Ui\Grid;
 use Sensorario\Engine\Ui\Grid\Dictionary\AllowedActions;
 use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldActionsException;
 use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldTypeException;
+use Sensorario\Engine\Ui\Grid\Exceptions\MissingSelectionException;
+use Sensorario\Engine\Ui\Grid\Exceptions\UnexpecteedActionException;
+use Sensorario\Engine\Ui\Grid\Exceptions\WrongActionsContentException;
+use Sensorario\Engine\Ui\Grid\Exceptions\WrongActionsFormatException;
 use Sensorario\Tools\PermissionMatcher;
 
 class Cell
@@ -32,9 +36,7 @@ class Cell
             // @todo check row integrity: type = "selection" requires also selection field.
             $selection = $field['selection'];
             if ($selection == '') {
-                throw new \RuntimeException(
-                    sprintf('Oops! Seleciton is missing for selection filed type')
-                );
+                throw new MissingSelectionException();
             }
             return "\n\t<div class=\"cell\"><input data-check=\"{{item.{$selection}}}\" type=\"checkbox\" /></div>";
         }
@@ -46,15 +48,11 @@ class Cell
             }
 
             if (isset($field['actions']) && !is_array($field['actions'])) {
-                throw new \RuntimeException(
-                    sprintf('Oops! Actions must be an array')
-                );
+                throw new WrongActionsFormatException();
             }
 
             if (count($field['actions']) === 0) {
-                throw new \RuntimeException(
-                    sprintf('Oops! Actions cant be an empty array')
-                );
+                throw new WrongActionsContentException();
             }
 
             $checker = new PermissionMatcher(
@@ -70,9 +68,7 @@ class Cell
                 HTML;
             }
 
-            throw new \RuntimeException(
-                sprintf('Oops! Available actions are "delete"')
-            );
+            throw new UnexpecteedActionException();
         }
 
         return "\n\t<div class=\"cell\">## {type}.{$fieldType} ##</div>";
