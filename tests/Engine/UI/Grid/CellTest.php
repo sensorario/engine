@@ -4,7 +4,6 @@ namespace Sensorario\Tests\Engine\UI\Grid;
 
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use SebastianBergmann\Template\Template;
 use Sensorario\Engine\Ui\Grid\Cell;
 use Sensorario\Engine\Ui\Grid\Exceptions\MissingFieldTypeException;
 
