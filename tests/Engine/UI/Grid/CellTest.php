@@ -71,7 +71,7 @@ class CellTest extends TestCase
     public function shouldCheckIdActionsIsNotEqualsToDelete(): void
     {
         $this->expectException(UnexpecteedActionException::class);
-        $this->expectExceptionMessage('Oops! Available actions are "delete"');
+        $this->expectExceptionMessage('Oops! Available actions are "delete, update"');
 
         $field = [];
         $field['type'] = 'form';
@@ -91,6 +91,21 @@ class CellTest extends TestCase
         $this->assertEquals(<<<HTML
         <div class="cell">
             <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+        </div>
+        HTML, $output);
+    }
+
+    /** @test */
+    public function shouldExpectUpdateAsAction(): void
+    {
+        $field = [];
+        $field['type'] = 'form';
+        $field['actions'] = ['update'];
+        $resource = 'string';
+        $output = Cell::fromField($field, $resource);
+        $this->assertEquals(<<<HTML
+        <div class="cell">
+            <button data-id="{{item.id}}" data-form="update">&nbsp;UPDATE&nbsp;</button>
         </div>
         HTML, $output);
     }

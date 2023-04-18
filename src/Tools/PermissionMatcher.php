@@ -10,7 +10,7 @@ class PermissionMatcher
     {
         sort($haystack);
 
-        $this->match = $needles === array_intersect(
+        $this->match = [] != array_intersect(
             $haystack,
             $needles,
         );

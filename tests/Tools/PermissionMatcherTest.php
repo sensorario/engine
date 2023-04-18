@@ -5,7 +5,7 @@ namespace Sensorario\Test\Tools;
 use PHPUnit\Framework\TestCase;
 use Sensorario\Tools\PermissionMatcher;
 
-class ActionsMatcherTest extends TestCase
+class PermissionMatcherTest extends TestCase
 {
     /** @test */
     public function shouldDetectWheneverNeedleIsEqualsToTheHaystack()
@@ -49,5 +49,16 @@ class ActionsMatcherTest extends TestCase
         $matcher = (new PermissionMatcher($needles, $haystack));
 
         $this->assertFalse($matcher->areNeedlesInHayStack());
+    }
+
+    /** @test */
+    public function shouldDoSomething()
+    {
+        $needles = ['update'];
+        $haystack = ['delete', 'update'];
+
+        $matcher = (new PermissionMatcher($needles, $haystack));
+
+        $this->assertTrue($matcher->areNeedlesInHayStack());
     }
 }

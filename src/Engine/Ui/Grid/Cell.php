@@ -63,8 +63,9 @@ class Cell
             if ($checker->areNeedlesInHayStack()) {
                 $buttons = '';
                 foreach($field[CellType::Actions->value] as $action) {
+                    $ACTION = strtoupper($action);
                     $buttons .= <<<BUTTON
-                    <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+                    <button data-id="{{item.id}}" data-form="$action">&nbsp;$ACTION&nbsp;</button>
                     BUTTON;
                 }
                 return <<<HTML
@@ -74,7 +75,7 @@ class Cell
                 HTML;
             }
 
-            throw new UnexpecteedActionException();
+            throw new UnexpecteedActionException($field[CellType::Actions->value]);
         }
 
         return "\n\t<div class=\"cell\">## {type}.{$fieldType} ##</div>";
