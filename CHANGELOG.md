@@ -6,6 +6,7 @@
 
  - [fix: #10] - accept just crud operations
  - [fix: #12] - add a list of allowed actions
+ - [fix: #15] - use enums instead of strings
  - [fix: #19] - ensure actions value is an array
  - [fix: #20] - wrong bin dir path in config.json
  

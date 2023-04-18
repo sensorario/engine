@@ -15,48 +15,48 @@ class Cell
 {
     public static function fromField(array $field, string $resource): string
     {
-        if (!isset($field['type'])) {
+        if (!isset($field[CellType::Type->value])) {
             throw new MissingFieldTypeException();
         }
 
-        $fieldName = $field['field'] ?? '';
-        $fieldType = $field['type'] ?? '';
-        $linked = isset($field['linked']) && $field['linked'] === 'true';
-        $linking = $field['linking'] ?? false
-        ? "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.".$field['linking']."}}\">{{item.{$fieldName}}}</a></div>"
+        $fieldName = $field[CellType::Field->value] ?? '';
+        $fieldType = $field[CellType::Type->value] ?? '';
+        $linked = isset($field[CellType::Linked->value]) && $field[CellType::Linked->value] === 'true';
+        $linking = $field[CellType::Linking->value] ?? false
+        ? "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.".$field[CellType::Linking->value]."}}\">{{item.{$fieldName}}}</a></div>"
         : "\n\t<div class=\"cell\"><a href=\"/{$resource}/{{item.id}}\">{{item.{$fieldName}}}</a></div>";
 
-        if ($fieldType === 'text') {
+        if ($fieldType === CellType::Text->value) {
             return $linked
                 ? $linking
                 : "\n\t<div class=\"cell\">{{item.{$fieldName}}}</div>";
         }
 
-        if ($fieldType === 'selection') {
+        if ($fieldType === CellType::Selection->value) {
             // @todo check row integrity: type = "selection" requires also selection field.
-            $selection = $field['selection'];
+            $selection = $field[CellType::Selection->value];
             if ($selection == '') {
                 throw new MissingSelectionException();
             }
             return "\n\t<div class=\"cell\"><input data-check=\"{{item.{$selection}}}\" type=\"checkbox\" /></div>";
         }
 
-        if ($fieldType === 'form') {
+        if ($fieldType === CellType::Form->value) {
             // @todo each type must have its own meta field to get detailed informationsjj
-            if (!isset($field['actions']) || $field['actions'] == '') {
+            if (!isset($field[CellType::Actions->value]) || $field[CellType::Actions->value] == '') {
                 throw new MissingFieldActionsException();
             }
 
-            if (isset($field['actions']) && !is_array($field['actions'])) {
+            if (isset($field[CellType::Actions->value]) && !is_array($field[CellType::Actions->value])) {
                 throw new WrongActionsFormatException();
             }
 
-            if (count($field['actions']) === 0) {
+            if (count($field[CellType::Actions->value]) === 0) {
                 throw new WrongActionsContentException();
             }
 
             $checker = new PermissionMatcher(
-                $field['actions'],
+                $field[CellType::Actions->value],
                 AllowedActions::toArray(),
             );
 
