@@ -96,6 +96,21 @@ class CellTest extends TestCase
     }
 
     /** @test */
+    public function shouldRenderExplicitCustimButtons(): void
+    {
+        $field = [];
+        $field['type'] = 'form';
+        $field['actions'] = ['@add'];
+        $resource = 'string';
+        $output = Cell::fromField($field, $resource);
+        $this->assertEquals(<<<HTML
+        <div class="cell">
+            <button data-id="{{item.id}}" data-form="add">&nbsp;ADD&nbsp;</button>
+        </div>
+        HTML, $output);
+    }
+
+    /** @test */
     public function shouldExpectUpdateAsAction(): void
     {
         $field = [];

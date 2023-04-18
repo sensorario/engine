@@ -60,11 +60,17 @@ class Cell
                 AllowedActions::toArray(),
             );
 
-            if ($checker->areNeedlesInHayStack()) {
+            if ($checker->containsValidActions()) {
                 $buttons = '';
                 foreach($field[CellType::Actions->value] as $action) {
-                    $nl = $buttons === '' ? '' : "\n    ";
-                    $ACTION = strtoupper($action);
+                    list($nl, $ACTION, $action) = (function ($action) use ($buttons) {
+                        $action = str_replace('@', '', $action);
+                        return [
+                            $buttons === '' ? '' : "\n    ",
+                            strtoupper($action),
+                            $action,
+                        ];
+                    })($action);
                     $buttons .= <<<BUTTON
                     $nl<button data-id="{{item.id}}" data-form="$action">&nbsp;$ACTION&nbsp;</button>
                     BUTTON;

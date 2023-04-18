@@ -61,4 +61,17 @@ class PermissionMatcherTest extends TestCase
 
         $this->assertTrue($matcher->areNeedlesInHayStack());
     }
+
+    /** @test */
+    public function shouldAcceptItemsWithAt()
+    {
+        $needles = ['@foo'];
+        $haystack = ['delete', 'update'];
+
+        $matcher = (new PermissionMatcher($needles, $haystack));
+
+        $this->assertFalse($matcher->areNeedlesInHayStack());
+        $this->assertEquals(['@foo'], $matcher->listExplicitCustomItems());
+        $this->assertTrue($matcher->containsValidActions());
+    }
 }
