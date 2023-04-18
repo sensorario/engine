@@ -63,9 +63,10 @@ class Cell
             if ($checker->areNeedlesInHayStack()) {
                 $buttons = '';
                 foreach($field[CellType::Actions->value] as $action) {
+                    $nl = $buttons === '' ? '' : "\n    ";
                     $ACTION = strtoupper($action);
                     $buttons .= <<<BUTTON
-                    <button data-id="{{item.id}}" data-form="$action">&nbsp;$ACTION&nbsp;</button>
+                    $nl<button data-id="{{item.id}}" data-form="$action">&nbsp;$ACTION&nbsp;</button>
                     BUTTON;
                 }
                 return <<<HTML

@@ -109,4 +109,20 @@ class CellTest extends TestCase
         </div>
         HTML, $output);
     }
+
+    /** @test */
+    public function shoudAddAllButtons(): void
+    {
+        $field = [];
+        $field['type'] = 'form';
+        $field['actions'] = ['update','delete'];
+        $resource = 'string';
+        $output = Cell::fromField($field, $resource);
+        $this->assertEquals(<<<HTML
+        <div class="cell">
+            <button data-id="{{item.id}}" data-form="update">&nbsp;UPDATE&nbsp;</button>
+            <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+        </div>
+        HTML, $output);
+    }
 }
