@@ -61,9 +61,15 @@ class Cell
             );
 
             if ($checker->areNeedlesInHayStack()) {
+                $buttons = '';
+                foreach($field[CellType::Actions->value] as $action) {
+                    $buttons .= <<<BUTTON
+                    <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+                    BUTTON;
+                }
                 return <<<HTML
                 <div class="cell">
-                    <button data-id="{{item.id}}" data-form="delete">&nbsp;DELETE&nbsp;</button>
+                    $buttons
                 </div>
                 HTML;
             }
