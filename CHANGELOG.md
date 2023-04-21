@@ -18,6 +18,7 @@
  - add examples that can run in docker
  - add if statement
  - add explicit custom buttons
+ - add coverage to cell type form
 
 ## v1.0 (25/03/2023)
 
