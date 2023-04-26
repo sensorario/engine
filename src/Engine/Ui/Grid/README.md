@@ -11,7 +11,7 @@
         "headers": { ... },
     },
     "source": { ... }
-}}}
+}}}Grid
 ```
 
 Nel json devono essere definite due variabli: model e source. Source indica il nome della tabella, gli elementi per pagine e orderBy se si vuole ordinare per il valore di una certa colonna.
@@ -66,7 +66,7 @@ Ogni riga puo' avere una cella con una checkbox. Quando questa viene selezionata
         "headers": { ... },
     },
     "source": { ... }
-}}}
+}}}Grid
 ```
 
 ### Le colonne
@@ -93,7 +93,7 @@ Ci sono fondamentalmente due campi: "text" oppure "selection". Il primo mostra s
         "repository": "Your.App.Repository",
         "itemPerPage": "11"
     }
-}}}
+}}}Grid
 ```
 
 La configurazione viene passata completamente al PageBuilder.
