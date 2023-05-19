@@ -33,6 +33,11 @@ class Engine
         $this->templateFolder = $templateFolder;
     }
 
+    public function injectConfiguration(array $config)
+    {
+        $this->setTemplateFolder($config['setTemplateFolder']);
+    }
+
     // @todo passare il model come secondo parametro
     public function render(string $template = 'templates', $model = [], $return = false)
     {

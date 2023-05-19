@@ -15,6 +15,11 @@ class EngineFactory
 
     }
 
+    public function __invoke()
+    {
+        return $this->getEngine();
+    }
+
     public function getEngine()
     {
         return new Engine(
