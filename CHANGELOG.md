@@ -19,6 +19,7 @@
  - add if statement
  - add explicit custom buttons
  - add coverage to cell type form
+ - add methods to interact with engine from outside
 
 ## v1.0 (25/03/2023)
 
