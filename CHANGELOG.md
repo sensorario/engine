@@ -13,12 +13,13 @@
 ### enhancements
 
  - add custom repository to each component
- - add Grid, View and Message component
+ - add Grid, Form, View and Message components
  - add docker configurations
  - add examples that can run in docker
  - add if statement
  - add explicit custom buttons
  - add coverage to cell type form
+ - add exception in case of component's configuration
 
 ## v1.0 (25/03/2023)
 
