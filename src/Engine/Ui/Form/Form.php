@@ -49,16 +49,18 @@ class Form implements EngineElement
             );
         }
 
-        $fields = $this->config['fields'];
-        foreach ($fields as $field) {
-            
+        if (!isset($this->config['form'])) {
+            throw new RuntimeException(
+                sprintf('Oops! Missing form')
+            );
         }
 
+        $this->builder->preload($this->config);
 
         // @todo remove duplication
         $content = $this->builder->apply(__DIR__ . '/templates/', 'form');
         // $content = $this->renderLoops->apply($content, $this->config['model']);
-        // $content = $this->varRender->apply($content, $this->config['model']);
+        $content = $this->varRender->apply($content, $this->config['form']);
         // $content = $this->varCounter->apply($content, $this->config['model']);
 
         return $content;

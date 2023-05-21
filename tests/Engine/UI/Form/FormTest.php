@@ -32,10 +32,14 @@ class FormTest extends TestCase
         $form = Form::withEngine(
             $this->engine,
             [
+                'form' => [
+                    'method' => 'post',
+                    'action' => 'post',
+                ],
                 'fields' => [
-                    'name',
-                    'surname',
-                    'dob',
+                    ['name' => 'name'],
+                    ['name' => 'surname'],
+                    ['name' => 'dob'],
                 ],
             ]
         );
@@ -43,9 +47,9 @@ class FormTest extends TestCase
         $output = $form->render();
 
         $this->assertXpath($output, '//button', 'send');
-        $this->assertXpath($output, "//input[@type='text'][1]/@name", 'name');
-        $this->assertXpath($output, "//input[@type='text'][2]/@name", 'surname');
-        $this->assertXpath($output, "//input[@type='text'][3]/@name", 'dob');
+        $this->assertXpath($output, "//input[@name='name'][1]/@name", 'name');
+        $this->assertXpath($output, "//input[@name='surname'][1]/@name", 'surname');
+        $this->assertXpath($output, "//input[@name='dob'][1]/@name", 'dob');
     }
 
     private function assertXpath($content, $search, $expected)
@@ -55,6 +59,9 @@ class FormTest extends TestCase
         $dom->loadHTML($html);
         $xpath = new DOMXPath($dom);
         $nodes = $xpath->query($search);
+        if (false === ($nodes->length > 0)) {
+            var_export($node);die;
+        }
         $this->assertTrue($nodes->length > 0);
         $this->assertEquals($expected, (string) $nodes->item(0)->nodeValue);
     }
