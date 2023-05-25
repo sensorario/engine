@@ -20,6 +20,7 @@
  - add explicit custom buttons
  - add coverage to cell type form
  - add exception in case of component's configuration
+ - add methods to interact with engine from outside
 
 ## v1.0 (25/03/2023)
 
