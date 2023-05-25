@@ -2,6 +2,8 @@
 
 namespace Sensorario\Engine;
 
+use RuntimeException;
+
 class Engine
 {
     private $templateFolder = '';
@@ -65,7 +67,7 @@ class Engine
             $content = $this->varCounter->apply($content, $data);
 
             //  {{componente:{"configu":"razione"}}}
-            foreach (['View','Grid'] as $uiElement) {
+            foreach (['View','Grid','Form'] as $uiElement) {
                 $pattern = '/\{\{'.$uiElement.':(.*)\}\}'.$uiElement.'/s';
 
                 // @todo mettere un bel check sulla validita del json
@@ -74,9 +76,19 @@ class Engine
                     $ui->element = $matches[0];
                     $ui->conf = $matches[1];
 
+                    // @todo verificare che ci sia un json valido
+                    // e nel caso tirare una eccezxione
+                    $conf = json_decode($ui->conf, true);
+                    if ($conf === null) {
+                        throw new RuntimeException(
+                            sprintf('Oops! Wrong JSON format: %s', $ui->conf)
+                        );
+                    }
+
                     $ui = match($uiElement) {
-                        'Grid' => Ui\Grid\Grid::withEngine($this, json_decode($ui->conf, true)),
-                        'View' => Ui\View\View::withEngine($this, json_decode($ui->conf, true)),
+                        'Grid' => Ui\Grid\Grid::withEngine($this, $conf),
+                        'View' => Ui\View\View::withEngine($this, $conf),
+                        'Form' => Ui\Form\Form::withEngine($this, $conf),
                         default => Ui\Message\Message::createWithConfig($ui),
                     };
 

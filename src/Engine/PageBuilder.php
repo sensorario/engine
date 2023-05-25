@@ -78,6 +78,18 @@ class PageBuilder
 
         $content = $this->ifStatement->apply($content, $this->preloaded);
 
+        $re = '/(?s){% explode formfields %}/m';
+        preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
+        if ($matches != []) {
+            $return = '';
+            foreach ($this->preloaded['fields'] as $field) {
+                // @todo la risorsa dovrebbe essere dedotta dalla request/querystring
+                $return .= Ui\Form\Input::fromField($field);
+            }
+            $content = str_replace('{% explode formfields %}', $return, $content);
+        }
+
+        // @todo rinominare in grid.fields o qualche cosa del genere
         $re = '/(?s){% explode fields %}/m';
         preg_match_all($re, $content, $matches, PREG_SET_ORDER, 0);
         if ($matches != []) {
