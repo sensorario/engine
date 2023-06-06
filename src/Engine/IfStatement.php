@@ -8,19 +8,23 @@ class IfStatement
     {
         $re = '/{% if (.*?) %}(.*?){% endif %}/m';
         preg_match_all($re, $content, $statements, PREG_SET_ORDER, 0);
-
+        
         if ($statements === []) {
             return $content;
         }
-
+        
         foreach ($statements as $statement) {
             $re = '/{% if (.*?) %}(.*?){% endif %}/m';
             preg_match_all($re, $statement[0], $matches, PREG_SET_ORDER, 0);
-
+            
             if(count(explode(' ', $matches[0][1])) === 1) {
+                
+                
+                $search = '{% if '.$matches[0][1].' %}'.$matches[0][2].'{% endif %}';
+                $replace = $model[$matches[0][1]] == true ? $matches[0][2] : '';
                 $content = str_replace(
-                    '{% if '.$matches[0][1].' %}'.$matches[0][2].'{% endif %}',
-                    $model[$matches[0][1]] === true ? $matches[0][2] : '',
+                    $search,
+                    $replace,
                     $content
                 );
             }
@@ -28,7 +32,9 @@ class IfStatement
             if(count(explode(' ', $matches[0][1])) === 3) {
                 [$condition, $operand, $value] = explode(' ', $matches[0][1]);
                 if ($operand != 'is') {
-                    throw new \RuntimeException('Oops! Unknown operand');
+                    throw new \RuntimeException(
+                        sprintf('Oops! Unknown operand "%s".', $operand)
+                    );
                 }
                 [$key1, $key2] = explode('.', $condition);
                 $with = $model[$key1][$key2] == $value ? $matches[0][2] : '';
@@ -39,7 +45,7 @@ class IfStatement
                 );
             }
         }
-
+        
         return $content;
     }
 }
