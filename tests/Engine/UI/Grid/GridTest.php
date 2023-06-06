@@ -1,11 +1,10 @@
 <?php
 
-namespace Sensorario\Tests\Engine;
+namespace Sensorario\Tests\Engine\Ui\Grid;
 
 use DOMDocument;
 use DOMXPath;
 use PHPUnit\Framework\TestCase;
-use Sensorario\Engine\Finder;
 use Sensorario\Engine\PageBuilder;
 use Sensorario\Engine\RenderLoops;
 use Sensorario\Engine\Ui\Grid\Exceptions\MissingRowIdentifierException;
@@ -75,7 +74,7 @@ class GridTest extends TestCase
                 ],
                 'source' => [
                     'itemPerPage' => 10,
-                    'repository' => 'Sensorario.Tests.Engine.FakeClass',
+                    'repository' => 'Sensorario.Tests.Engine.Ui.Grid.FakeClass',
                 ],
             ]
         );
@@ -118,7 +117,7 @@ class GridTest extends TestCase
                 'source' => [
                     'resource' => 'foo',
                     'itemPerPage' => 10,
-                    'repository' => 'Sensorario.Tests.Engine.FakeClass',
+                    'repository' => 'Sensorario.Tests.Engine.Ui.Grid.FakeClass',
                 ],
             ]
         );
