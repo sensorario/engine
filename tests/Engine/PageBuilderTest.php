@@ -149,8 +149,8 @@ class PageBuilderTest extends TestCase
         return [
             ['{% if varname %}abc{% endif %}', ['varname'=> true], 'abc'],
             ['{% if varname %}abc{% endif %}', ['varname'=> false], ''],
-            ['{% if varname %}abc{% endif %}', ['varname'=> 'false'], ''],
-            ['{% if varname %}abc{% endif %}', ['varname'=> 'true'], ''],
+            ['{% if varname %}abc{% endif %}', ['varname' => 'false'], 'abc'],
+            ['{% if varname %}abc{% endif %}', ['varname' => 'true'], 'abc'],
         ];
     }
 
