@@ -7,6 +7,7 @@ class RenderLoops
     public function __construct(
         private VarRender $varRender = new VarRender(),
         private VarCounter $varCounter = new VarCounter(),
+        private IfStatement $ifStatement = new IfStatement(),
     ) {
     }
 
@@ -29,6 +30,7 @@ class RenderLoops
                         } // @todo verificare se non sia la fine del file
                     }
 
+                    $partial = $this->ifStatement->apply($partial, [ $item_name => $values ]);
                     $partial = $this->varRender->apply($partial, [ $item_name => $values ]);
                     $partial = $this->varCounter->apply($partial, [ $item_name => $values ]);
                     $output .= $partial;

@@ -32,7 +32,9 @@ class IfStatement
             if(count(explode(' ', $matches[0][1])) === 3) {
                 [$condition, $operand, $value] = explode(' ', $matches[0][1]);
                 if ($operand != 'is') {
-                    throw new \RuntimeException('Oops! Unknown operand');
+                    throw new \RuntimeException(
+                        sprintf('Oops! Unknown operand "%s".', $operand)
+                    );
                 }
                 [$key1, $key2] = explode('.', $condition);
                 $with = $model[$key1][$key2] == $value ? $matches[0][2] : '';

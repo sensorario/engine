@@ -29,5 +29,27 @@ class RenderLoopTest extends TestCase
         <li>43</li>
         
         ENGINE, $result);
+    }    /** @test */
+    public function xxx()
+    {
+        $loops = new RenderLoops();
+        $result = $loops->apply(<<<ENGINE
+        {% foreach items as item %}
+        <li>{% if item.id is 42 %}ciaone{% endif %}{% if item.id is 43 %}43{% endif %}</li>
+        {% endforeach %}
+        ENGINE, [
+            'items' => [
+                ['id' => 42],
+                ['id' => 43],
+            ]
+        ]);
+
+        $this->assertSame(<<<ENGINE
+
+        <li>ciaone</li>
+
+        <li>43</li>
+        
+        ENGINE, $result);
     }
 }
